@@ -19,15 +19,24 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background-color: var(--soft-pink);
+            /* Animated gradient background */
+            background: linear-gradient(-45deg, #fff0f3, #ffccd5, #fff0f3, #ffb3c1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             line-height: 1.6;
         }
 
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         /* --- Navigation --- */
         nav {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(15px);
             padding: 12px;
             position: fixed;
@@ -41,7 +50,8 @@
             gap: 15px;
             z-index: 1000;
             border-radius: 50px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 32px rgba(255, 77, 109, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         nav a, .music-toggle {
@@ -69,9 +79,26 @@
             animation: fadeIn 0.8s ease-in-out;
         }
         .active { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Polaroid Gallery --- */
+        /* --- Polaroid System --- */
+        .polaroid {
+            background: white;
+            padding: 12px 12px 35px 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            transform: rotate(var(--r, 0deg));
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 220px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .polaroid:hover { transform: rotate(0deg) scale(1.05); z-index: 10; }
+        .polaroid img { width: 100%; height: 200px; object-fit: cover; border-radius: 2px; }
+        
+        /* Specific Gallery Polaroids (smaller) */
+        .gallery-container .polaroid { width: 150px; }
+        .gallery-container .polaroid img { height: 130px; }
+
         .gallery-container {
             display: flex;
             gap: 20px;
@@ -80,21 +107,10 @@
             margin-top: 30px;
         }
 
-        .polaroid {
-            background: white;
-            padding: 10px 10px 25px 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transform: rotate(var(--r));
-            transition: 0.3s;
-            width: 150px;
-        }
-        .polaroid:hover { transform: rotate(0deg) scale(1.1); z-index: 10; }
-        .polaroid img { width: 100%; height: 130px; object-fit: cover; }
-
         .cta-btn {
             background: var(--velvet);
             color: white;
-            padding: 20px 45px;
+            padding: 18px 40px;
             border-radius: 50px;
             border: none;
             font-size: 1.1rem;
@@ -102,14 +118,16 @@
             cursor: pointer;
             box-shadow: 0 10px 25px rgba(128, 15, 47, 0.3);
             transition: 0.3s;
+            margin-top: 20px;
         }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(128, 15, 47, 0.4); }
 
         /* --- THE MAGIC SCROLL SYSTEM --- */
         #scroll-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(12px);
             z-index: 2000;
             justify-content: center;
@@ -152,7 +170,7 @@
 
         .unrolled .scroll-content { height: 550px; padding: 40px 30px; }
 
-        .featured-photo {
+        .featured-photo-scroll {
             width: 100%;
             max-width: 200px;
             border: 8px solid white;
@@ -162,7 +180,7 @@
             opacity: 0;
             transition: 1s 1s;
         }
-        .unrolled .featured-photo { opacity: 1; transform: translateY(0); }
+        .unrolled .featured-photo-scroll { opacity: 1; transform: translateY(0); }
 
         .scroll-text {
             opacity: 0;
@@ -184,6 +202,8 @@
         @media (max-width: 500px) {
             .scroll-roller { width: 310px; }
             .scroll-content { width: 280px; }
+            .polaroid { width: 180px; }
+            .polaroid img { height: 160px; }
         }
     </style>
 </head>
@@ -195,7 +215,7 @@
         <div class="scroll-container" id="scroll-box">
             <div class="scroll-roller top"></div>
             <div class="scroll-content">
-                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400" class="featured-photo" alt="Us">
+                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400" class="featured-photo-scroll" alt="Us">
                 <div class="scroll-text">
                     <h2>To My Everything,</h2>
                     <p>I crafted this ancient scroll to tell you that you are my most precious treasure. You make every day feel like a fairytale.</p>
@@ -215,13 +235,17 @@
     </nav>
 
     <section id="home" class="page active">
-        <h1 style="font-size: 3.5rem;">Hello, Handsome.</h1>
-        <p style="font-size: 1.2rem; margin: 20px 0 40px;">Ready to walk down memory lane?</p>
+        <div class="polaroid" style="--r: -2deg">
+            <img src="https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?q=80&w=400" alt="Main Memory">
+        </div>
+        
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--velvet);">Hello, Handsome.</h1>
+        <p style="font-size: 1.1rem; margin: 10px 0 30px; color: var(--dark-pink); font-weight: 500;">Ready to walk down memory lane?</p>
         <button class="cta-btn" onclick="showPage('story')">Enter Our Story</button>
     </section>
 
     <section id="story" class="page">
-        <h1>Our Moments</h1>
+        <h1 style="font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--dark-pink);">Our Moments</h1>
         <p>Every second spent with you is a second I treasure.</p>
         
         <div class="gallery-container">
@@ -241,7 +265,7 @@
 
     <section id="gallery" class="page">
         <h1 style="font-family: 'Dancing Script'; font-size: 4rem; color: var(--dark-pink); margin-bottom: 30px;">Will you be my Valentine?</h1>
-        <button class="cta-btn" onclick="openScroll()" style="background: var(--primary-pink);">Yes, I will! ❤️</button>
+        <button class="cta-btn" onclick="openScroll()" style="background: var(--primary-pink); font-size: 1.4rem;">Yes, I will! ❤️</button>
     </section>
 
     <script>
@@ -268,7 +292,7 @@
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-            window.scrollTo(0,0);
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
         // Scroll
@@ -290,12 +314,13 @@
             h.style.left = Math.random() * 100 + 'vw';
             h.style.top = '105vh';
             h.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            const duration = Math.random() * 3 + 4;
+            h.style.opacity = Math.random() * 0.5 + 0.3;
+            const duration = Math.random() * 3 + 5;
             h.style.animationDuration = duration + 's';
             document.body.appendChild(h);
             setTimeout(() => h.remove(), duration * 1000);
         }
-        setInterval(spawnHeart, 600);
+        setInterval(spawnHeart, 700);
     </script>
 </body>
 </html>
