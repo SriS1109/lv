@@ -15,6 +15,9 @@
             --envelope-flap: #f7d6d5;
             --wax-seal: #a4133c;
             --text-main: #2d2d2d;
+            /* Vintage Colors */
+            --parchment: #f4e4bc;
+            --parchment-dark: #e2cf9a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -43,7 +46,6 @@
             z-index: 1000;
             border-radius: 100px;
             border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
         nav a, .music-toggle {
@@ -58,15 +60,13 @@
             align-items: center;
             justify-content: center;
             border-radius: 50px;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.4s;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border: none;
-            cursor: pointer;
         }
 
-        .music-toggle { background: var(--velvet); width: 105px; }
-        nav a:hover, .music-toggle:hover { transform: translateY(-3px); filter: brightness(1.1); }
+        .music-toggle { background: var(--velvet); width: 105px; cursor: pointer;}
 
         /* --- Page Sections --- */
         .page {
@@ -85,8 +85,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 8vw, 3.5rem); color: var(--velvet); margin-bottom: 30px; }
-        p { font-size: clamp(1rem, 4.5vw, 1.1rem); max-width: 500px; margin-bottom: 40px; color: var(--text-main); }
-
+        
         .polaroid {
             background: white;
             padding: 12px 12px 55px;
@@ -94,10 +93,8 @@
             transform: rotate(-1.5deg);
             max-width: 290px;
             margin-bottom: 45px;
-            border-radius: 2px;
         }
-
-        .polaroid img { width: 100%; display: block; border-radius: 1px; }
+        .polaroid img { width: 100%; display: block; }
 
         .cta-btn {
             background: var(--velvet);
@@ -108,16 +105,15 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
             box-shadow: 0 10px 20px rgba(128, 15, 47, 0.2);
         }
 
-        /* --- THE ULTIMATE ENVELOPE --- */
+        /* --- THE VINTAGE ENVELOPE --- */
         #letter-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(12px);
             z-index: 2000;
             justify-content: center;
@@ -128,7 +124,7 @@
             position: relative;
             width: 320px;
             height: 220px;
-            perspective: 1500px; /* Crucial for 3D look */
+            perspective: 1500px;
         }
 
         .envelope-wrapper {
@@ -138,11 +134,10 @@
             position: absolute;
             bottom: 0;
             border-radius: 0 0 12px 12px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
             z-index: 10;
         }
 
-        /* The Animated Flap */
         .envelope-flap {
             position: absolute;
             top: 0; left: 0;
@@ -151,11 +146,10 @@
             border-right: 160px solid transparent;
             border-top: 130px solid var(--envelope-flap);
             transform-origin: top;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 30; /* Starts in front */
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 30;
         }
 
-        /* Wax Seal Styling */
         .wax-seal {
             position: absolute;
             top: 105px; left: 50%;
@@ -168,75 +162,78 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(255,255,255,0.9);
+            color: white;
             font-size: 1.4rem;
-            transition: opacity 0.4s ease, transform 0.4s ease;
-            cursor: pointer;
+            transition: opacity 0.4s ease;
         }
 
-        .wax-seal::after { content: ""; position: absolute; width: 85%; height: 85%; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; }
+        .envelope-container.open .envelope-flap { transform: rotateX(180deg); z-index: 5; }
+        .envelope-container.open .wax-seal { opacity: 0; pointer-events: none; }
 
-        /* The Open State Physics */
-        .envelope-container.open .envelope-flap {
-            transform: rotateX(180deg);
-            z-index: 5; /* Flips behind once open */
-        }
-
-        .envelope-container.open .wax-seal {
-            opacity: 0;
-            transform: translateX(-50%) scale(1.5);
-            pointer-events: none;
-        }
-
-        /* The Letter Paper */
+        /* THE VINTAGE LETTER PAGE */
         .letter {
             position: absolute;
-            top: 15px; left: 10px;
+            top: 10px; left: 10px;
             width: 300px;
             height: 240px;
-            background: #fff;
-            padding: 30px 20px;
+            /* Old Page Texture */
+            background: var(--parchment);
+            background-image: radial-gradient(circle, var(--parchment) 0%, var(--parchment-dark) 100%);
+            padding: 30px 25px;
             transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 20; /* Between flap and base */
-            border-radius: 4px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            z-index: 20;
+            border-radius: 2px;
+            /* Burnt Edge effect */
+            box-shadow: inset 0 0 30px rgba(139, 69, 19, 0.3), 5px 5px 15px rgba(0,0,0,0.2);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            border: 1px solid rgba(139, 69, 19, 0.1);
+        }
+
+        /* Subtle "Old Paper" texture overlay using a pseudo-element */
+        .letter::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            opacity: 0.4;
+            pointer-events: none;
         }
 
         .envelope-container.open .letter {
-            transform: translateY(-165px);
-            z-index: 40; /* Becomes the top layer */
+            transform: translateY(-170px) rotate(-1deg);
+            z-index: 40;
         }
 
-        .letter h3 { font-family: 'Dancing Script', cursive; font-size: 2.4rem; color: var(--dark-pink); }
-        .letter p { font-size: 0.95rem; line-height: 1.6; color: #444; margin: 0; }
+        .letter h3 { 
+            font-family: 'Dancing Script', cursive; 
+            font-size: 2.2rem; 
+            color: #5d4037; /* Dark brownish coffee color */
+            margin-bottom: 10px;
+        }
+
+        .letter p { 
+            font-family: 'Dancing Script', cursive; 
+            font-size: 1.2rem; 
+            line-height: 1.4; 
+            color: #3e2723; 
+            font-weight: 600;
+        }
         
         .close-btn {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--dark-pink);
+            margin-top: 15px;
+            font-size: 0.7rem;
+            color: #8d6e63;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            padding: 8px 15px;
-            border: 1px solid var(--soft-pink);
-            border-radius: 20px;
-            transition: 0.3s;
+            border-bottom: 1px solid #8d6e63;
         }
-        .close-btn:hover { background: var(--soft-pink); }
 
-        /* Background Ambience */
         .floating-heart { position: fixed; color: var(--primary-pink); z-index: -1; opacity: 0.4; animation: floatUp 6s linear infinite; }
         @keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; } }
-
-        @media (max-width: 600px) {
-            nav { width: 98%; gap: 6px; padding: 10px; }
-            nav a, .music-toggle { width: 85px; font-size: 0.65rem; }
-            .letter { height: 260px; }
-        }
     </style>
 </head>
 <body>
@@ -247,11 +244,11 @@
     <div id="letter-overlay">
         <div class="envelope-container" id="envelope-container">
             <div class="envelope-flap"></div>
-            <div class="wax-seal" onclick="toggleEnvelope()">❤️</div>
+            <div class="wax-seal">❤️</div>
             <div class="envelope-wrapper"></div>
             <div class="letter">
-                <h3>Always Yours</h3>
-                <p>I built this little corner of the internet just to say: you're my favorite person in every universe. Happy Valentine's Day! ❤️</p>
+                <h3>My Dearest...</h3>
+                <p>I built this little world just to tell you that you are my favorite story. Thank you for being my home. Happy Valentine's Day! ❤️</p>
                 <div class="close-btn" onclick="closeOverlay()">Close Letter</div>
             </div>
         </div>
@@ -269,7 +266,7 @@
         <div class="polaroid">
             <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" alt="Us">
         </div>
-        <p>I wanted to create something as special as you are. Shall we take a walk through our story?</p>
+        <p>Shall we take a walk through our story?</p>
         <button class="cta-btn" onclick="showPage('story')">Begin Journey</button>
     </section>
 
@@ -278,13 +275,12 @@
         <div class="polaroid" style="transform: rotate(2deg);">
             <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg">
         </div>
-        <p>From our very first "hello" to all the inside jokes, every moment with you is a memory I'll keep forever.</p>
+        <p>Every moment with you is a memory I'll keep forever.</p>
         <button class="cta-btn" onclick="showPage('gallery')">Final Chapter</button>
     </section>
 
     <section id="gallery" class="page">
         <h1 style="font-family: 'Dancing Script'; font-size: 3.5rem;">One Question...</h1>
-        <p>No matter where we go or what we do, I just want you by my side. You're my favorite place to be.</p>
         <h1 style="margin-top: -15px;">Will you be my Valentine?</h1>
         <button class="cta-btn" onclick="handleYes(event)" style="background: var(--primary-pink);">Yes, I will! ❤️</button>
     </section>
@@ -316,37 +312,34 @@
         }
 
         function handleYes(event) {
-            // Heart Burst Effect
+            // Heart Burst
             const x = event.clientX || window.innerWidth/2;
             const y = event.clientY || window.innerHeight/2;
             for (let i = 0; i < 30; i++) {
                 const h = document.createElement('div');
-                h.innerHTML = '❤️'; h.style.position = 'fixed'; h.style.left = x + 'px'; h.style.top = y + 'px'; h.style.pointerEvents = 'none';
-                h.animate([{ transform: 'translate(0,0) scale(1)', opacity: 1 }, { transform: `translate(${(Math.random()-0.5)*500}px, ${(Math.random()-0.5)*500}px) scale(0)`, opacity: 0 }], { duration: 1000, easing: 'ease-out' });
+                h.innerHTML = '❤️'; h.style.position = 'fixed'; h.style.left = x + 'px'; h.style.top = y + 'px';
+                h.animate([{ transform: 'translate(0,0) scale(1)', opacity: 1 }, { transform: `translate(${(Math.random()-0.5)*500}px, ${(Math.random()-0.5)*500}px) scale(0)`, opacity: 0 }], { duration: 1000 });
                 document.body.appendChild(h); setTimeout(() => h.remove(), 1000);
             }
-            // Show Envelope
+            
+            // SHOW CLOSED ENVELOPE FIRST
             setTimeout(() => {
                 document.getElementById('letter-overlay').style.display = 'flex';
-                // The letter opens automatically on the "Yes" trigger
-                setTimeout(() => document.getElementById('envelope-container').classList.add('open'), 400);
+                // WAIT THEN OPEN
+                setTimeout(() => {
+                    document.getElementById('envelope-container').classList.add('open');
+                }, 1200); // 1.2 second pause for suspense
             }, 500);
         }
 
-        function toggleEnvelope() {
-            document.getElementById('envelope-container').classList.toggle('open');
-        }
-
         function closeOverlay() {
-            const container = document.getElementById('envelope-container');
-            container.classList.remove('open');
+            document.getElementById('envelope-container').classList.remove('open');
             setTimeout(() => { document.getElementById('letter-overlay').style.display = 'none'; }, 600);
         }
 
         function spawnHeart() {
             const h = document.createElement('div'); h.className = 'floating-heart'; h.innerHTML = '❤️';
             h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 10 + 10) + 'px';
-            h.style.animationDuration = (Math.random() * 3 + 4) + 's';
             document.getElementById('heart-container').appendChild(h); setTimeout(() => h.remove(), 7000);
         }
         setInterval(spawnHeart, 700);
