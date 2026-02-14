@@ -35,24 +35,24 @@
         }
 
         /* --- Navigation --- */
-        nav {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(15px);
-            padding: 12px;
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 700px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            z-index: 1000;
-            border-radius: 50px;
-            box-shadow: 0 8px 32px rgba(255, 77, 109, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
+      nav {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(15px);
+    padding: 12px 25px; /* Added more horizontal padding */
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto; /* Changed from 90% to auto so it fits the content perfectly */
+    min-width: 320px;
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Increased space between buttons */
+    z-index: 1000;
+    border-radius: 50px;
+    box-shadow: 0 8px 32px rgba(255, 77, 109, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
 
         nav a, .music-toggle {
             text-decoration: none;
@@ -101,7 +101,7 @@
 
         .gallery-container {
             display: flex;
-            gap: 20px;
+            gap: 30px;
             flex-wrap: wrap;
             justify-content: center;
             margin-top: 30px;
