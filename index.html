@@ -34,37 +34,55 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- Navigation --- */
-      nav {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(15px);
-    padding: 12px 25px; /* Added more horizontal padding */
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: auto; /* Changed from 90% to auto so it fits the content perfectly */
-    min-width: 320px;
-    display: flex;
-    justify-content: center;
-    gap: 20px; /* Increased space between buttons */
-    z-index: 1000;
-    border-radius: 50px;
-    box-shadow: 0 8px 32px rgba(255, 77, 109, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
+      /* --- Navigation --- */
+        nav {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            padding: 8px 12px;
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%; /* Responsive width */
+            max-width: 450px; /* Limits size on desktop */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            border-radius: 50px;
+            box-shadow: 0 8px 32px rgba(255, 77, 109, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
 
         nav a, .music-toggle {
             text-decoration: none;
             background: var(--primary-pink);
             color: white !important;
-            padding: 8px 18px;
-            border-radius: 20px;
+            padding: 10px 5px; /* Taller for easier tapping */
+            border-radius: 25px;
             font-size: 0.8rem;
             font-weight: 600;
             border: none;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.2s ease;
+            flex: 1; /* Makes all buttons equal width */
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* Subtle feedback when tapped */
+        nav a:active, .music-toggle:active {
+            transform: scale(0.95);
+            background: var(--dark-pink);
+        }
+
+        /* Mobile specific font tweak */
+        @media (max-width: 380px) {
+            nav a, .music-toggle {
+                font-size: 0.7rem;
+                padding: 8px 2px;
+            }
         }
 
         /* --- Page Sections --- */
