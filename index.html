@@ -34,7 +34,6 @@
         nav {
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             padding: 12px 20px;
             position: fixed;
             top: 20px;
@@ -70,7 +69,6 @@
         }
 
         .music-toggle { background: var(--velvet); width: 105px; }
-        nav a:hover, .music-toggle:hover { transform: translateY(-3px); filter: brightness(1.1); }
 
         /* --- Page Layout --- */
         .page {
@@ -128,25 +126,23 @@
             transition: 0.3s;
         }
 
-        /* --- IMPROVED 3D ENVELOPE --- */
+        /* --- ADVANCED 3D ENVELOPE --- */
         #letter-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(45, 45, 45, 0.4);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
-            cursor: zoom-out; /* Hint that clicking anywhere closes it */
         }
 
         .envelope-container {
             position: relative;
             width: 320px;
-            height: 200px;
-            perspective: 1000px;
-            cursor: default;
+            height: 220px;
+            perspective: 1500px;
         }
 
         .envelope-wrapper {
@@ -156,50 +152,99 @@
             position: absolute;
             bottom: 0;
             border-radius: 0 0 10px 10px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             z-index: 10;
         }
 
-        /* Flap with smoother 3D rotation */
-        .envelope-wrapper::before {
-            content: "";
+        /* The 3D Flap */
+        .envelope-flap {
             position: absolute;
             top: 0; left: 0;
             width: 0; height: 0;
             border-left: 160px solid transparent;
             border-right: 160px solid transparent;
-            border-top: 110px solid var(--envelope-flap);
+            border-top: 130px solid var(--envelope-flap);
             transform-origin: top;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 30;
         }
 
-        .envelope-container.open .envelope-wrapper::before {
+        .envelope-container.open .envelope-flap {
             transform: rotateX(180deg);
+            z-index: 5; /* Moves behind the letter once open */
         }
 
-        /* The actual letter */
+        /* Wax Seal Effect */
+        .wax-seal {
+            position: absolute;
+            top: 110px; left: 50%;
+            transform: translateX(-50%);
+            width: 45px; height: 45px;
+            background: #a4133c;
+            border-radius: 50%;
+            z-index: 35;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: opacity 0.3s;
+        }
+
+        .envelope-container.open .wax-seal {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* THE LETTER MESSAGE */
         .letter {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 15px; left: 10px;
             width: 300px;
-            height: 180px;
+            height: 260px; /* Taller for better text spacing */
             background: white;
-            padding: 25px;
-            text-align: center;
-            transition: transform 0.6s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            padding: 35px 25px;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 20;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: center;
         }
 
         .envelope-container.open .letter {
-            transform: translateY(-130px) scale(1.05);
-            z-index: 40; /* Pulls letter to the front */
+            transform: translateY(-160px);
+            z-index: 40;
+        }
+
+        .letter h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: var(--dark-pink);
+            margin-bottom: 15px;
+        }
+
+        .letter p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+
+        .close-hint {
+            font-size: 0.7rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            padding: 5px 15px;
+            border: 1px solid #eee;
+            border-radius: 20px;
         }
 
         .floating-heart {
@@ -217,8 +262,8 @@
 
         @media (max-width: 600px) {
             nav { gap: 8px; width: 98%; }
-            nav a, .music-toggle { width: 78px; font-size: 0.65rem; height: 38px; }
-            .page { padding-top: 130px; }
+            nav a, .music-toggle { width: 78px; font-size: 0.65rem; }
+            .letter { height: 280px; padding: 25px 20px; }
         }
     </style>
 </head>
@@ -227,13 +272,15 @@
     <div id="youtube-player" style="position: absolute; left: -9999px;"></div>
     <div id="heart-container"></div>
 
-    <div id="letter-overlay" onclick="closeLetter()">
-        <div class="envelope-container" id="envelope-container" onclick="event.stopPropagation()">
+    <div id="letter-overlay">
+        <div class="envelope-container" id="envelope-container">
+            <div class="envelope-flap"></div>
+            <div class="wax-seal">❤️</div>
             <div class="envelope-wrapper"></div>
             <div class="letter">
-                <h3 style="font-family: 'Dancing Script'; font-size: 2rem; color: var(--dark-pink);">Forever Yours</h3>
-                <p style="font-size: 0.9rem; line-height: 1.5; margin-top: 15px; color: #444;">You're my greatest adventure. I love you more than words could ever express! ❤️</p>
-                <span style="font-size: 0.7rem; color: #999; margin-top: 10px;">(Tap anywhere to close)</span>
+                <h3>Always Yours</h3>
+                <p>Every single day, I find new reasons to be grateful that you're in my life. You're my home, my joy, and my favorite person.</p>
+                <div class="close-hint" onclick="closeLetter()">Close Letter</div>
             </div>
         </div>
     </div>
@@ -250,7 +297,7 @@
         <div class="polaroid">
             <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" alt="Us">
         </div>
-        <p>I built this little corner of the internet just to show you how much you mean to me. Ready to walk through our story?</p>
+        <p>I built this little corner of the internet just for you. Ready to walk through our story?</p>
         <button class="cta-btn" onclick="showPage('story')">Our Journey</button>
     </section>
 
@@ -259,7 +306,7 @@
         <div class="polaroid" style="transform: rotate(3deg);">
             <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg">
         </div>
-        <p>They say home is where the heart is. For me, home is wherever you are. Every laugh we've shared is my favorite memory.</p>
+        <p>They say time flies when you're having fun, but with you, every second feels like a treasure.</p>
         <button class="cta-btn" onclick="showPage('gallery')">The Question</button>
     </section>
 
@@ -271,7 +318,6 @@
     </section>
 
     <script>
-        // YouTube API Logic
         var player;
         var playerReady = false;
         function onYouTubeIframeAPIReady() {
@@ -298,19 +344,16 @@
             }
         }
 
-        // Navigation
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Interaction Logic
         function handleYes(event) {
             const x = event.clientX || window.innerWidth/2;
             const y = event.clientY || window.innerHeight/2;
             
-            // Burst animation
             for (let i = 0; i < 30; i++) {
                 const h = document.createElement('div');
                 h.innerHTML = '❤️';
@@ -325,10 +368,8 @@
                 setTimeout(() => h.remove(), 1000);
             }
 
-            // Open Envelope after delay
             setTimeout(() => {
                 document.getElementById('letter-overlay').style.display = 'flex';
-                // Trigger opening animation
                 setTimeout(() => {
                     document.getElementById('envelope-container').classList.add('open');
                 }, 300);
@@ -338,13 +379,11 @@
         function closeLetter() {
             const container = document.getElementById('envelope-container');
             container.classList.remove('open');
-            // Wait for letter to slide down before hiding overlay
             setTimeout(() => {
                 document.getElementById('letter-overlay').style.display = 'none';
-            }, 500);
+            }, 600);
         }
 
-        // Background Hearts
         function spawnHeart() {
             const h = document.createElement('div');
             h.className = 'floating-heart';
