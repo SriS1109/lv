@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Favorite Person 💖</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Inter:wght@400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <title>For My Sweetheart 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Inter:wght@400;500;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-pink: #ff4d6d;
@@ -13,15 +13,11 @@
             --velvet: #800f2f;
             --envelope-base: #fdf0ef;
             --envelope-flap: #f7d6d5;
+            --wax-seal: #a4133c;
             --text-main: #2d2d2d;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             background-color: var(--soft-pink);
@@ -32,7 +28,7 @@
 
         /* --- Symmetrical Navigation --- */
         nav {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(20px);
             padding: 12px 20px;
             position: fixed;
@@ -40,13 +36,14 @@
             left: 50%;
             transform: translateX(-50%);
             width: 95%;
-            max-width: 600px;
+            max-width: 550px;
             display: flex;
             justify-content: center;
             gap: 12px;
             z-index: 1000;
             border-radius: 100px;
             border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
         nav a, .music-toggle {
@@ -69,8 +66,9 @@
         }
 
         .music-toggle { background: var(--velvet); width: 105px; }
+        nav a:hover, .music-toggle:hover { transform: translateY(-3px); filter: brightness(1.1); }
 
-        /* --- Page Layout --- */
+        /* --- Page Sections --- */
         .page {
             display: none;
             min-height: 100vh;
@@ -79,40 +77,27 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            animation: fadeIn 0.8s ease;
+            animation: fadeIn 0.8s ease-out;
         }
 
         .active { display: flex; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.2rem, 8vw, 3.5rem);
-            color: var(--velvet);
-            margin-bottom: 35px;
-        }
-
-        p {
-            font-size: clamp(1rem, 4.5vw, 1.1rem);
-            max-width: 500px;
-            margin-bottom: 50px;
-            color: var(--text-main);
-        }
+        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 8vw, 3.5rem); color: var(--velvet); margin-bottom: 30px; }
+        p { font-size: clamp(1rem, 4.5vw, 1.1rem); max-width: 500px; margin-bottom: 40px; color: var(--text-main); }
 
         .polaroid {
             background: white;
-            padding: 12px 12px 50px;
+            padding: 12px 12px 55px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-            transform: rotate(-2deg);
-            max-width: 280px;
-            margin-bottom: 50px;
+            transform: rotate(-1.5deg);
+            max-width: 290px;
+            margin-bottom: 45px;
+            border-radius: 2px;
         }
 
-        .polaroid img { width: 100%; display: block; }
+        .polaroid img { width: 100%; display: block; border-radius: 1px; }
 
         .cta-btn {
             background: var(--velvet);
@@ -124,15 +109,16 @@
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(128, 15, 47, 0.2);
         }
 
-        /* --- ADVANCED 3D ENVELOPE --- */
+        /* --- THE ULTIMATE ENVELOPE --- */
         #letter-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
@@ -142,7 +128,7 @@
             position: relative;
             width: 320px;
             height: 220px;
-            perspective: 1500px;
+            perspective: 1500px; /* Crucial for 3D look */
         }
 
         .envelope-wrapper {
@@ -151,12 +137,12 @@
             height: 100%;
             position: absolute;
             bottom: 0;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
             z-index: 10;
         }
 
-        /* The 3D Flap */
+        /* The Animated Flap */
         .envelope-flap {
             position: absolute;
             top: 0; left: 0;
@@ -166,104 +152,90 @@
             border-top: 130px solid var(--envelope-flap);
             transform-origin: top;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 30;
+            z-index: 30; /* Starts in front */
         }
 
-        .envelope-container.open .envelope-flap {
-            transform: rotateX(180deg);
-            z-index: 5; /* Moves behind the letter once open */
-        }
-
-        /* Wax Seal Effect */
+        /* Wax Seal Styling */
         .wax-seal {
             position: absolute;
-            top: 110px; left: 50%;
+            top: 105px; left: 50%;
             transform: translateX(-50%);
-            width: 45px; height: 45px;
-            background: #a4133c;
+            width: 50px; height: 50px;
+            background: var(--wax-seal);
             border-radius: 50%;
             z-index: 35;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 0 10px rgba(0,0,0,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            transition: opacity 0.3s;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.4rem;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            cursor: pointer;
+        }
+
+        .wax-seal::after { content: ""; position: absolute; width: 85%; height: 85%; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; }
+
+        /* The Open State Physics */
+        .envelope-container.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 5; /* Flips behind once open */
         }
 
         .envelope-container.open .wax-seal {
             opacity: 0;
+            transform: translateX(-50%) scale(1.5);
             pointer-events: none;
         }
 
-        /* THE LETTER MESSAGE */
+        /* The Letter Paper */
         .letter {
             position: absolute;
             top: 15px; left: 10px;
             width: 300px;
-            height: 260px; /* Taller for better text spacing */
-            background: white;
-            padding: 35px 25px;
+            height: 240px;
+            background: #fff;
+            padding: 30px 20px;
             transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 20;
-            border-radius: 5px;
+            z-index: 20; /* Between flap and base */
+            border-radius: 4px;
             box-shadow: 0 0 15px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
         }
 
         .envelope-container.open .letter {
-            transform: translateY(-160px);
-            z-index: 40;
+            transform: translateY(-165px);
+            z-index: 40; /* Becomes the top layer */
         }
 
-        .letter h3 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.2rem;
+        .letter h3 { font-family: 'Dancing Script', cursive; font-size: 2.4rem; color: var(--dark-pink); }
+        .letter p { font-size: 0.95rem; line-height: 1.6; color: #444; margin: 0; }
+        
+        .close-btn {
+            font-size: 0.75rem;
+            font-weight: 600;
             color: var(--dark-pink);
-            margin-bottom: 15px;
-        }
-
-        .letter p {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #444;
-            margin-bottom: 20px;
-            max-width: 100%;
-        }
-
-        .close-hint {
-            font-size: 0.7rem;
-            color: #999;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            padding: 5px 15px;
-            border: 1px solid #eee;
+            padding: 8px 15px;
+            border: 1px solid var(--soft-pink);
             border-radius: 20px;
+            transition: 0.3s;
         }
+        .close-btn:hover { background: var(--soft-pink); }
 
-        .floating-heart {
-            position: fixed;
-            color: var(--primary-pink);
-            z-index: -1;
-            opacity: 0.4;
-            animation: floatUp 6s linear infinite;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(110vh); opacity: 1; }
-            100% { transform: translateY(-10vh); opacity: 0; }
-        }
+        /* Background Ambience */
+        .floating-heart { position: fixed; color: var(--primary-pink); z-index: -1; opacity: 0.4; animation: floatUp 6s linear infinite; }
+        @keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; } }
 
         @media (max-width: 600px) {
-            nav { gap: 8px; width: 98%; }
-            nav a, .music-toggle { width: 78px; font-size: 0.65rem; }
-            .letter { height: 280px; padding: 25px 20px; }
+            nav { width: 98%; gap: 6px; padding: 10px; }
+            nav a, .music-toggle { width: 85px; font-size: 0.65rem; }
+            .letter { height: 260px; }
         }
     </style>
 </head>
@@ -275,12 +247,12 @@
     <div id="letter-overlay">
         <div class="envelope-container" id="envelope-container">
             <div class="envelope-flap"></div>
-            <div class="wax-seal">❤️</div>
+            <div class="wax-seal" onclick="toggleEnvelope()">❤️</div>
             <div class="envelope-wrapper"></div>
             <div class="letter">
                 <h3>Always Yours</h3>
-                <p>Every single day, I find new reasons to be grateful that you're in my life. You're my home, my joy, and my favorite person.</p>
-                <div class="close-hint" onclick="closeLetter()">Close Letter</div>
+                <p>I built this little corner of the internet just to say: you're my favorite person in every universe. Happy Valentine's Day! ❤️</p>
+                <div class="close-btn" onclick="closeOverlay()">Close Letter</div>
             </div>
         </div>
     </div>
@@ -293,27 +265,27 @@
     </nav>
 
     <section id="home" class="page active">
-        <h1>Hi, Sweetheart.</h1>
+        <h1>Hi, Handsome.</h1>
         <div class="polaroid">
             <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" alt="Us">
         </div>
-        <p>I built this little corner of the internet just for you. Ready to walk through our story?</p>
-        <button class="cta-btn" onclick="showPage('story')">Our Journey</button>
+        <p>I wanted to create something as special as you are. Shall we take a walk through our story?</p>
+        <button class="cta-btn" onclick="showPage('story')">Begin Journey</button>
     </section>
 
     <section id="story" class="page">
-        <h1>Moments Like These.</h1>
-        <div class="polaroid" style="transform: rotate(3deg);">
+        <h1>Our Story.</h1>
+        <div class="polaroid" style="transform: rotate(2deg);">
             <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg">
         </div>
-        <p>They say time flies when you're having fun, but with you, every second feels like a treasure.</p>
-        <button class="cta-btn" onclick="showPage('gallery')">The Question</button>
+        <p>From our very first "hello" to all the inside jokes, every moment with you is a memory I'll keep forever.</p>
+        <button class="cta-btn" onclick="showPage('gallery')">Final Chapter</button>
     </section>
 
     <section id="gallery" class="page">
-        <h1 style="font-family: 'Dancing Script'; font-size: 3rem;">One Last Thing...</h1>
-        <p>I want to spend all my tomorrows with you. You're my favorite person in the whole world.</p>
-        <h1 style="margin-top: -20px;">Will you be my Valentine?</h1>
+        <h1 style="font-family: 'Dancing Script'; font-size: 3.5rem;">One Question...</h1>
+        <p>No matter where we go or what we do, I just want you by my side. You're my favorite place to be.</p>
+        <h1 style="margin-top: -15px;">Will you be my Valentine?</h1>
         <button class="cta-btn" onclick="handleYes(event)" style="background: var(--primary-pink);">Yes, I will! ❤️</button>
     </section>
 
@@ -327,21 +299,14 @@
                 events: { 'onReady': function() { playerReady = true; } }
             });
         }
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        var tag = document.createElement('script'); tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         function toggleMusic() {
             if (!playerReady) return;
             const btn = document.getElementById('musicBtn');
-            if (player.getPlayerState() !== 1) {
-                player.playVideo();
-                btn.innerHTML = "⏸ Pause";
-            } else {
-                player.pauseVideo();
-                btn.innerHTML = "🎵 Play";
-            }
+            if (player.getPlayerState() !== 1) { player.playVideo(); btn.innerHTML = "⏸ Pause"; }
+            else { player.pauseVideo(); btn.innerHTML = "🎵 Play"; }
         }
 
         function showPage(pageId) {
@@ -351,48 +316,38 @@
         }
 
         function handleYes(event) {
+            // Heart Burst Effect
             const x = event.clientX || window.innerWidth/2;
             const y = event.clientY || window.innerHeight/2;
-            
             for (let i = 0; i < 30; i++) {
                 const h = document.createElement('div');
-                h.innerHTML = '❤️';
-                h.style.position = 'fixed';
-                h.style.left = x + 'px'; h.style.top = y + 'px';
-                h.style.pointerEvents = 'none';
-                h.animate([
-                    { transform: 'translate(0,0) scale(1)', opacity: 1 },
-                    { transform: `translate(${(Math.random()-0.5)*500}px, ${(Math.random()-0.5)*500}px) scale(0)`, opacity: 0 }
-                ], { duration: 1000, easing: 'ease-out' });
-                document.body.appendChild(h);
-                setTimeout(() => h.remove(), 1000);
+                h.innerHTML = '❤️'; h.style.position = 'fixed'; h.style.left = x + 'px'; h.style.top = y + 'px'; h.style.pointerEvents = 'none';
+                h.animate([{ transform: 'translate(0,0) scale(1)', opacity: 1 }, { transform: `translate(${(Math.random()-0.5)*500}px, ${(Math.random()-0.5)*500}px) scale(0)`, opacity: 0 }], { duration: 1000, easing: 'ease-out' });
+                document.body.appendChild(h); setTimeout(() => h.remove(), 1000);
             }
-
+            // Show Envelope
             setTimeout(() => {
                 document.getElementById('letter-overlay').style.display = 'flex';
-                setTimeout(() => {
-                    document.getElementById('envelope-container').classList.add('open');
-                }, 300);
+                // The letter opens automatically on the "Yes" trigger
+                setTimeout(() => document.getElementById('envelope-container').classList.add('open'), 400);
             }, 500);
         }
 
-        function closeLetter() {
+        function toggleEnvelope() {
+            document.getElementById('envelope-container').classList.toggle('open');
+        }
+
+        function closeOverlay() {
             const container = document.getElementById('envelope-container');
             container.classList.remove('open');
-            setTimeout(() => {
-                document.getElementById('letter-overlay').style.display = 'none';
-            }, 600);
+            setTimeout(() => { document.getElementById('letter-overlay').style.display = 'none'; }, 600);
         }
 
         function spawnHeart() {
-            const h = document.createElement('div');
-            h.className = 'floating-heart';
-            h.innerHTML = '❤️';
-            h.style.left = Math.random() * 100 + 'vw';
-            h.style.fontSize = (Math.random() * 10 + 10) + 'px';
+            const h = document.createElement('div'); h.className = 'floating-heart'; h.innerHTML = '❤️';
+            h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 10 + 10) + 'px';
             h.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            document.getElementById('heart-container').appendChild(h);
-            setTimeout(() => h.remove(), 7000);
+            document.getElementById('heart-container').appendChild(h); setTimeout(() => h.remove(), 7000);
         }
         setInterval(spawnHeart, 700);
     </script>
