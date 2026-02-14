@@ -14,8 +14,6 @@
             --envelope-base: #fdf0ef;
             --envelope-flap: #f7d6d5;
             --wax-seal: #a4133c;
-            --text-main: #2d2d2d;
-            /* Vintage Colors */
             --parchment: #f4e4bc;
             --parchment-dark: #e2cf9a;
         }
@@ -29,7 +27,7 @@
             line-height: 1.8;
         }
 
-        /* --- Symmetrical Navigation --- */
+        /* --- Navigation --- */
         nav {
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(20px);
@@ -60,15 +58,14 @@
             align-items: center;
             justify-content: center;
             border-radius: 50px;
-            transition: 0.4s;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             border: none;
+            cursor: pointer;
         }
 
-        .music-toggle { background: var(--velvet); width: 105px; cursor: pointer;}
+        .music-toggle { background: var(--velvet); width: 105px; }
 
-        /* --- Page Sections --- */
+        /* --- Sections --- */
         .page {
             display: none;
             min-height: 100vh;
@@ -77,163 +74,138 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            animation: fadeIn 0.8s ease-out;
         }
-
         .active { display: flex; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
-        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 8vw, 3.5rem); color: var(--velvet); margin-bottom: 30px; }
-        
-        .polaroid {
-            background: white;
-            padding: 12px 12px 55px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-            transform: rotate(-1.5deg);
-            max-width: 290px;
-            margin-bottom: 45px;
-        }
-        .polaroid img { width: 100%; display: block; }
 
         .cta-btn {
             background: var(--velvet);
             color: white;
-            border: none;
             padding: 18px 50px;
             border-radius: 100px;
-            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(128, 15, 47, 0.2);
+            border: none;
         }
 
-        /* --- THE VINTAGE ENVELOPE --- */
+        /* --- ENHANCED ENVELOPE & LETTER --- */
         #letter-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
         }
 
+        /* Container is now larger */
         .envelope-container {
             position: relative;
-            width: 320px;
-            height: 220px;
+            width: 380px;
+            height: 260px;
             perspective: 1500px;
         }
 
+        /* The Pocket */
         .envelope-wrapper {
             background: var(--envelope-base);
             width: 100%;
             height: 100%;
             position: absolute;
             bottom: 0;
-            border-radius: 0 0 12px 12px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            z-index: 10;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            z-index: 30; /* Pocket is in front of the letter initially */
         }
 
+        /* The Flap */
         .envelope-flap {
             position: absolute;
             top: 0; left: 0;
             width: 0; height: 0;
-            border-left: 160px solid transparent;
-            border-right: 160px solid transparent;
-            border-top: 130px solid var(--envelope-flap);
+            border-left: 190px solid transparent;
+            border-right: 190px solid transparent;
+            border-top: 150px solid var(--envelope-flap);
             transform-origin: top;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 30;
+            transition: transform 0.6s ease-in-out;
+            z-index: 40; /* Flap is the topmost layer when closed */
         }
 
         .wax-seal {
             position: absolute;
-            top: 105px; left: 50%;
+            top: 120px; left: 50%;
             transform: translateX(-50%);
-            width: 50px; height: 50px;
+            width: 55px; height: 55px;
             background: var(--wax-seal);
             border-radius: 50%;
-            z-index: 35;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 0 10px rgba(0,0,0,0.2);
+            z-index: 45;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.4rem;
-            transition: opacity 0.4s ease;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: opacity 0.3s;
         }
 
-        .envelope-container.open .envelope-flap { transform: rotateX(180deg); z-index: 5; }
-        .envelope-container.open .wax-seal { opacity: 0; pointer-events: none; }
+        /* OPEN STATE */
+        .envelope-container.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 10; /* Move behind everything else */
+        }
+        .envelope-container.open .wax-seal { opacity: 0; }
 
-        /* THE VINTAGE LETTER PAGE */
+        /* THE LETTER - Smaller than envelope to look like it fits inside */
         .letter {
             position: absolute;
-            top: 10px; left: 10px;
-            width: 300px;
-            height: 240px;
-            /* Old Page Texture */
+            bottom: 10px; /* Hidden inside pocket */
+            left: 20px;
+            width: 340px;
+            height: 300px;
             background: var(--parchment);
             background-image: radial-gradient(circle, var(--parchment) 0%, var(--parchment-dark) 100%);
-            padding: 30px 25px;
-            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 20;
+            padding: 40px 30px;
+            z-index: 20; /* Behind the pocket initially */
             border-radius: 2px;
-            /* Burnt Edge effect */
-            box-shadow: inset 0 0 30px rgba(139, 69, 19, 0.3), 5px 5px 15px rgba(0,0,0,0.2);
+            box-shadow: inset 0 0 40px rgba(139, 69, 19, 0.2);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), z-index 0s 0.4s;
+            text-align: center;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            border: 1px solid rgba(139, 69, 19, 0.1);
         }
 
-        /* Subtle "Old Paper" texture overlay using a pseudo-element */
-        .letter::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
+        /* Coming out animation */
         .envelope-container.open .letter {
-            transform: translateY(-170px) rotate(-1deg);
-            z-index: 40;
+            transform: translateY(-220px); /* Moves up and out */
+            z-index: 50; /* Jumps to the very front layer */
         }
 
-        .letter h3 { 
-            font-family: 'Dancing Script', cursive; 
-            font-size: 2.2rem; 
-            color: #5d4037; /* Dark brownish coffee color */
-            margin-bottom: 10px;
-        }
+        .letter h3 { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #5d4037; margin-bottom: 15px; }
+        .letter p { font-family: 'Dancing Script', cursive; font-size: 1.3rem; line-height: 1.4; color: #3e2723; font-weight: 600; }
 
-        .letter p { 
-            font-family: 'Dancing Script', cursive; 
-            font-size: 1.2rem; 
-            line-height: 1.4; 
-            color: #3e2723; 
-            font-weight: 600;
-        }
-        
         .close-btn {
-            margin-top: 15px;
-            font-size: 0.7rem;
+            margin-top: 25px;
+            font-size: 0.75rem;
             color: #8d6e63;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             cursor: pointer;
-            border-bottom: 1px solid #8d6e63;
+            font-weight: 800;
+            border: 1px solid #8d6e63;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: 0.3s;
         }
+        .close-btn:hover { background: #8d6e63; color: white; }
 
-        .floating-heart { position: fixed; color: var(--primary-pink); z-index: -1; opacity: 0.4; animation: floatUp 6s linear infinite; }
-        @keyframes floatUp { 0% { transform: translateY(110vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; } }
+        @media (max-width: 600px) {
+            .envelope-container { width: 320px; height: 220px; }
+            .envelope-flap { border-left: 160px solid transparent; border-right: 160px solid transparent; border-top: 130px solid var(--envelope-flap); }
+            .letter { width: 280px; height: 280px; left: 20px; }
+            .envelope-container.open .letter { transform: translateY(-180px); }
+        }
     </style>
 </head>
 <body>
@@ -246,48 +218,41 @@
             <div class="envelope-flap"></div>
             <div class="wax-seal">❤️</div>
             <div class="envelope-wrapper"></div>
-            <div class="letter">
-                <h3>My Dearest...</h3>
-                <p>I built this little world just to tell you that you are my favorite story. Thank you for being my home. Happy Valentine's Day! ❤️</p>
-                <div class="close-btn" onclick="closeOverlay()">Close Letter</div>
+            <div class="letter" id="main-letter">
+                <h3>My Dearest One,</h3>
+                <p>You are my favorite thought. Every moment with you is a gift I'll cherish forever. Happy Valentine's Day! ❤️</p>
+                <div class="close-btn" onclick="closeOverlay()">Close Message</div>
             </div>
         </div>
     </div>
 
     <nav>
-        <a href="javascript:void(0)" onclick="showPage('home')">Home</a>
-        <a href="javascript:void(0)" onclick="showPage('story')">Journey</a>
-        <a href="javascript:void(0)" onclick="showPage('gallery')">Gallery</a>
+        <a href="#" onclick="showPage('home')">Home</a>
+        <a href="#" onclick="showPage('story')">Journey</a>
+        <a href="#" onclick="showPage('gallery')">Gallery</a>
         <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵 Play</button>
     </nav>
 
     <section id="home" class="page active">
         <h1>Hi, Handsome.</h1>
-        <div class="polaroid">
-            <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" alt="Us">
-        </div>
-        <p>Shall we take a walk through our story?</p>
+        <p>I built this corner of the internet just for you.</p>
         <button class="cta-btn" onclick="showPage('story')">Begin Journey</button>
     </section>
 
     <section id="story" class="page">
-        <h1>Our Story.</h1>
-        <div class="polaroid" style="transform: rotate(2deg);">
-            <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg">
-        </div>
-        <p>Every moment with you is a memory I'll keep forever.</p>
-        <button class="cta-btn" onclick="showPage('gallery')">Final Chapter</button>
+        <h1>Our Journey.</h1>
+        <p>Every step we take together is a new favorite memory.</p>
+        <button class="cta-btn" onclick="showPage('gallery')">Final Page</button>
     </section>
 
     <section id="gallery" class="page">
-        <h1 style="font-family: 'Dancing Script'; font-size: 3.5rem;">One Question...</h1>
-        <h1 style="margin-top: -15px;">Will you be my Valentine?</h1>
+        <h1 style="font-family: 'Dancing Script'; font-size: 3.5rem;">Will you be my Valentine?</h1>
         <button class="cta-btn" onclick="handleYes(event)" style="background: var(--primary-pink);">Yes, I will! ❤️</button>
     </section>
 
     <script>
-        var player;
-        var playerReady = false;
+        // Music Logic
+        var player; var playerReady = false;
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
                 height: '0', width: '0', videoId: 'hHuG7FIKgtc',
@@ -305,42 +270,52 @@
             else { player.pauseVideo(); btn.innerHTML = "🎵 Play"; }
         }
 
+        // Navigation
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Logic for "Coming Out"
         function handleYes(event) {
-            // Heart Burst
-            const x = event.clientX || window.innerWidth/2;
-            const y = event.clientY || window.innerHeight/2;
-            for (let i = 0; i < 30; i++) {
-                const h = document.createElement('div');
-                h.innerHTML = '❤️'; h.style.position = 'fixed'; h.style.left = x + 'px'; h.style.top = y + 'px';
-                h.animate([{ transform: 'translate(0,0) scale(1)', opacity: 1 }, { transform: `translate(${(Math.random()-0.5)*500}px, ${(Math.random()-0.5)*500}px) scale(0)`, opacity: 0 }], { duration: 1000 });
-                document.body.appendChild(h); setTimeout(() => h.remove(), 1000);
-            }
+            document.getElementById('letter-overlay').style.display = 'flex';
             
-            // SHOW CLOSED ENVELOPE FIRST
+            // Step 1: Show closed envelope
+            // Step 2: Open flap
             setTimeout(() => {
-                document.getElementById('letter-overlay').style.display = 'flex';
-                // WAIT THEN OPEN
-                setTimeout(() => {
-                    document.getElementById('envelope-container').classList.add('open');
-                }, 1200); // 1.2 second pause for suspense
-            }, 500);
+                document.getElementById('envelope-container').classList.add('open');
+            }, 1000);
         }
 
+        // Logic for "Going Back In"
         function closeOverlay() {
-            document.getElementById('envelope-container').classList.remove('open');
-            setTimeout(() => { document.getElementById('letter-overlay').style.display = 'none'; }, 600);
+            const container = document.getElementById('envelope-container');
+            const letter = document.getElementById('main-letter');
+            
+            // 1. Lower the letter's Z-index so it slides behind the envelope pocket
+            letter.style.zIndex = "20"; 
+            
+            // 2. Slide the letter down
+            container.classList.remove('open');
+            
+            // 3. Once letter is hidden, hide the whole overlay
+            setTimeout(() => {
+                document.getElementById('letter-overlay').style.display = 'none';
+            }, 800);
         }
 
+        // Background Hearts
         function spawnHeart() {
-            const h = document.createElement('div'); h.className = 'floating-heart'; h.innerHTML = '❤️';
-            h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (Math.random() * 10 + 10) + 'px';
-            document.getElementById('heart-container').appendChild(h); setTimeout(() => h.remove(), 7000);
+            const h = document.createElement('div');
+            h.innerHTML = '❤️';
+            h.style.position = 'fixed';
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.top = '110vh';
+            h.style.opacity = '0.4';
+            h.style.transition = '6s linear';
+            document.body.appendChild(h);
+            setTimeout(() => { h.style.transform = 'translateY(-120vh)'; }, 100);
+            setTimeout(() => { h.remove(); }, 6000);
         }
         setInterval(spawnHeart, 700);
     </script>
