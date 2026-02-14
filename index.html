@@ -3,47 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Sweetheart 💖</title>
+    <title>For My Favorite Person 💖</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap');
 
         :root {
             --primary-pink: #ff4d6d;
             --soft-pink: #fff0f3;
             --dark-pink: #c9184a;
-            --text-gray: #5a5a5a;
+            --text-gray: #4a4a4a;
+            --glass: rgba(255, 255, 255, 0.85);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
             background-color: var(--soft-pink);
             color: var(--text-gray);
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- Sophisticated Balanced Navigation --- */
+        /* --- Minimalist & Responsive Nav --- */
         nav {
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--glass);
             backdrop-filter: blur(15px);
-            padding: 10px 40px;
+            padding: 10px 20px;
             position: fixed;
-            top: 25px;
+            top: 15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 90%;
-            max-width: 900px;
+            width: 92%;
+            max-width: 500px; /* Slimmer, cleaner look */
             display: flex;
-            justify-content: space-between; /* Equal spacing between items */
+            justify-content: space-around;
             align-items: center;
-            box-shadow: 0 10px 40px rgba(255, 77, 109, 0.12);
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.1);
             z-index: 1000;
-            border-radius: 100px;
+            border-radius: 50px;
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
@@ -51,165 +53,172 @@
             text-decoration: none;
             color: var(--primary-pink);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: 0.3s;
-            padding: 10px 20px;
-            border-radius: 50px;
+            padding: 8px 12px;
+            border-radius: 20px;
             border: none;
             background: transparent;
             cursor: pointer;
             white-space: nowrap;
         }
 
-        nav a:hover {
-            background: rgba(255, 77, 109, 0.1);
-        }
-
         .music-toggle {
             background: var(--primary-pink);
             color: white;
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2);
+            padding: 8px 15px;
+            font-size: 0.75rem;
         }
 
-        .music-toggle:hover {
-            background: var(--dark-pink);
-            transform: scale(1.05);
-        }
-
-        /* --- Page Layout --- */
+        /* --- Layout & Responsiveness --- */
         .page {
             display: none;
             min-height: 100vh;
-            padding: 140px 25px 100px;
+            padding: 100px 20px 60px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            animation: fadeIn 1s ease;
+            animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         .active { display: flex; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         h1 { 
             font-family: 'Dancing Script', cursive;
-            font-size: clamp(2.8rem, 10vw, 4.5rem); 
+            font-size: clamp(2.5rem, 12vw, 4rem); 
             color: var(--dark-pink);
             margin-bottom: 1rem;
+            line-height: 1.2;
         }
 
-        h2 { font-size: 1.2rem; color: var(--primary-pink); margin-bottom: 1.5rem; letter-spacing: 2px; text-transform: uppercase; }
+        p { 
+            font-size: clamp(0.95rem, 4vw, 1.1rem); 
+            max-width: 450px; 
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            padding: 0 10px;
+        }
 
-        p { font-size: 1.1rem; max-width: 600px; color: var(--text-gray); margin-bottom: 2rem; }
-
-        /* --- Aesthetic Polaroid --- */
-        .polaroid-frame {
+        /* --- Aesthetic Content --- */
+        .polaroid {
             background: white;
-            padding: 15px 15px 60px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            border-radius: 2px;
-            transform: rotate(var(--rot, -2deg));
-            max-width: 350px;
-            margin-bottom: 40px;
+            padding: 12px 12px 40px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            border-radius: 4px;
+            transform: rotate(-2deg);
+            width: 100%;
+            max-width: 280px;
+            margin: 20px 0 40px;
             position: relative;
         }
 
-        .polaroid-frame img { width: 100%; height: auto; display: block; border-radius: 1px; }
-
-        .polaroid-frame::after {
-            content: attr(data-caption);
-            position: absolute;
-            bottom: 15px;
-            left: 0;
-            width: 100%;
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.5rem;
-            color: #444;
+        .polaroid img { 
+            width: 100%; 
+            height: auto; 
+            display: block; 
+            border-radius: 2px;
         }
 
-        .heart-btn {
+        .polaroid::after {
+            content: "♥︎";
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--primary-pink);
+            font-size: 1.2rem;
+        }
+
+        .cta-btn {
             background: var(--primary-pink);
             color: white;
             border: none;
-            padding: 18px 50px;
-            border-radius: 100px;
-            font-size: 1.1rem;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.3);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.25);
         }
 
-        /* --- Envelope --- */
+        .cta-btn:active { transform: scale(0.95); }
+
+        /* --- Envelope Animation --- */
         #letter-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 240, 243, 0.9);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
 
         .envelope {
-            background: #e0e0e0;
-            width: 340px;
-            height: 230px;
+            background: #f9f9f9;
+            width: 100%;
+            max-width: 320px;
+            height: 200px;
             position: relative;
             border-radius: 0 0 10px 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         .envelope::before {
             content: "";
             position: absolute;
             top: 0; z-index: 2;
-            border-left: 170px solid transparent;
-            border-right: 170px solid transparent;
-            border-top: 120px solid #d4d4d4;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 110px solid #ececec;
             transform-origin: top;
-            transition: transform 0.6s 0.2s;
+            transition: transform 0.5s ease;
         }
 
         .envelope.open::before { transform: rotateX(180deg); }
 
         .letter {
             position: absolute;
-            bottom: 10px; left: 10px;
-            width: 320px; height: 210px;
+            bottom: 5px; left: 5px;
+            width: calc(100% - 10px); height: 190px;
             background: white;
-            padding: 30px 25px;
+            padding: 25px;
             text-align: center;
-            transition: transform 0.6s;
+            transition: transform 0.5s;
             z-index: 1;
-            border-radius: 5px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .envelope.open .letter { transform: translateY(-130px); z-index: 3; }
+        .envelope.open .letter { transform: translateY(-100px); z-index: 3; box-shadow: 0 -10px 20px rgba(0,0,0,0.05); }
 
-        /* --- Floating Hearts --- */
-        .floating-heart {
+        /* --- Mobile Floating Elements --- */
+        .heart {
             position: fixed;
-            color: var(--primary-pink);
+            pointer-events: none;
             z-index: -1;
-            animation: float 6s linear infinite;
-            opacity: 0.5;
+            animation: float Up 5s linear infinite;
         }
 
-        @keyframes float {
-            0% { transform: translateY(110vh); opacity: 0.8; }
-            100% { transform: translateY(-10vh); opacity: 0; }
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) scale(0.8); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
 
-        @media (max-width: 768px) {
-            nav { padding: 10px 10px; width: 95%; }
-            nav a { padding: 8px 10px; font-size: 0.8rem; }
-            .music-toggle { padding: 8px 12px; font-size: 0.7rem; }
+        /* Responsive Fixes */
+        @media (max-width: 400px) {
+            nav { padding: 8px 10px; }
+            nav a { padding: 6px 8px; font-size: 0.75rem; }
+            .music-toggle { padding: 6px 10px; }
         }
     </style>
 </head>
@@ -221,50 +230,47 @@
     <div id="letter-overlay" onclick="closeLetter()">
         <div class="envelope" id="envelope">
             <div class="letter">
-                <h3 style="color: var(--dark-pink); font-family: 'Dancing Script'; font-size: 2rem;">Always Yours</h3>
-                <p style="font-size: 0.9rem; color: #555; margin-top: 10px;">I love you more than all the stars in the sky. Thank you for being my person. ❤️</p>
-                <p style="font-size: 0.7rem; color: #aaa; margin-top: 15px;">(Tap to close)</p>
+                <h3 style="color: var(--dark-pink); font-family: 'Dancing Script'; font-size: 1.8rem;">You're My Person</h3>
+                <p style="font-size: 0.85rem; margin-top: 10px;">Thank you for making every day feel like Valentine's Day. I love you! ❤️</p>
+                <span style="font-size: 0.7rem; color: #ccc; margin-top: 10px;">(Tap to close)</span>
             </div>
         </div>
     </div>
 
     <nav>
         <a href="javascript:void(0)" onclick="showPage('home')">Home</a>
-        <a href="javascript:void(0)" onclick="showPage('story')">Chapter I</a>
-        <a href="javascript:void(0)" onclick="showPage('gallery')">Chapter II</a>
-        <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵 Play Our Song</button>
+        <a href="javascript:void(0)" onclick="showPage('story')">Our Journey</a>
+        <a href="javascript:void(0)" onclick="showPage('gallery')">Gallery</a>
+        <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵 Play</button>
     </nav>
 
     <section id="home" class="page active">
-        <h2>Chapter I: The Beginning</h2>
-        <h1>Hey, Handsome. ✨</h1>
-        <div class="polaroid-frame" data-caption="Where it all started..." style="--rot: -3deg;">
-            <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg">
+        <h1>Hi, Sweetheart.</h1>
+        <div class="polaroid">
+            <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" alt="Us">
         </div>
-        <p>I built this little corner of the internet just to tell you something special. You make my world a lot brighter just by being in it.</p>
-        <button class="heart-btn" onclick="showPage('story')">Read More ➡</button>
+        <p>I built this little corner of the internet just for you. Take a walk through it with me?</p>
+        <button class="cta-btn" onclick="showPage('story')">Let's Go</button>
     </section>
 
     <section id="story" class="page">
-        <h2>Chapter II: The Journey</h2>
-        <h1>Better With You. 📖</h1>
-        <div class="polaroid-frame" data-caption="Every moment with you..." style="--rot: 3deg;">
+        <h1>Our Journey</h1>
+        <p>They say home isn't a place, it's a person. For me, that's always been you. Every laugh and every moment with you is my favorite memory.</p>
+        <div class="polaroid" style="transform: rotate(3deg);">
             <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg">
         </div>
-        <p>From the first "hello" to every late-night laugh, being with you is my favorite adventure. "Ishq" feels like it was written about us.</p>
-        <button class="heart-btn" onclick="showPage('gallery')">The Question ➡</button>
+        <button class="cta-btn" onclick="showPage('gallery')">Next</button>
     </section>
 
     <section id="gallery" class="page">
-        <h2>The Final Chapter</h2>
-        <h1>For My Sweetheart. 💌</h1>
-        <p>I don't need a thousand reasons to love you. I just need you. <br>So, I have one simple question...</p>
-        <h1 style="font-size: 3rem;">Will you be my Valentine?</h1>
-        <button class="heart-btn" onclick="handleYes(event)">Yes, I will! ❤️</button>
+        <h1>One Last Thing...</h1>
+        <p>No matter where we go or what we do, I just want you by my side. So, I have to ask...</p>
+        <h1 style="font-size: 2.2rem; margin-top: 0;">Will you be my Valentine?</h1>
+        <button class="cta-btn" onclick="handleYes(event)">Yes, I will! ❤️</button>
     </section>
 
     <script>
-        // 1. YouTube API
+        // 1. YouTube Logic
         var player;
         var playerReady = false;
         function onYouTubeIframeAPIReady() {
@@ -284,10 +290,10 @@
             const btn = document.getElementById('musicBtn');
             if (player.getPlayerState() !== 1) {
                 player.playVideo();
-                btn.innerHTML = "⏸ Pause Song";
+                btn.innerHTML = "⏸ Pause";
             } else {
                 player.pauseVideo();
-                btn.innerHTML = "🎵 Play Our Song";
+                btn.innerHTML = "🎵 Play";
             }
         }
 
@@ -298,51 +304,50 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 3. Handle Yes
+        // 3. The "Yes" Interaction
         function handleYes(event) {
-            for (let i = 0; i < 40; i++) {
-                const heart = document.createElement('div');
-                heart.style.position = 'fixed';
-                heart.style.left = event.clientX + 'px';
-                heart.style.top = event.clientY + 'px';
-                heart.innerHTML = '❤️';
-                heart.style.fontSize = '1.5rem';
-                heart.style.pointerEvents = 'none';
-                heart.style.zIndex = '9999';
-                heart.animate([
-                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-                    { transform: `translate(${(Math.random()-0.5)*500}px, ${(Math.random()-0.5)*500}px) scale(0)`, opacity: 0 }
-                ], { duration: 800, easing: 'ease-out', fill: 'forwards' });
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 800);
+            // Mobile-safe heart burst
+            const x = event.clientX || window.innerWidth/2;
+            const y = event.clientY || window.innerHeight/2;
+
+            for (let i = 0; i < 25; i++) {
+                const h = document.createElement('div');
+                h.innerHTML = '❤️';
+                h.style.position = 'fixed';
+                h.style.left = x + 'px';
+                h.style.top = y + 'px';
+                h.style.pointerEvents = 'none';
+                h.animate([
+                    { transform: 'translate(0,0) scale(1)', opacity: 1 },
+                    { transform: `translate(${(Math.random()-0.5)*400}px, ${(Math.random()-0.5)*400}px) scale(0)`, opacity: 0 }
+                ], { duration: 1000, easing: 'ease-out' });
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 1000);
             }
+
             setTimeout(() => {
-                const overlay = document.getElementById('letter-overlay');
-                const env = document.getElementById('envelope');
-                overlay.style.display = 'flex';
-                setTimeout(() => env.classList.add('open'), 100);
-            }, 600);
+                document.getElementById('letter-overlay').style.display = 'flex';
+                setTimeout(() => document.getElementById('envelope').classList.add('open'), 200);
+            }, 500);
         }
 
         function closeLetter() {
-            const env = document.getElementById('envelope');
-            const overlay = document.getElementById('letter-overlay');
-            env.classList.remove('open');
-            setTimeout(() => overlay.style.display = 'none', 500);
+            document.getElementById('envelope').classList.remove('open');
+            setTimeout(() => document.getElementById('letter-overlay').style.display = 'none', 500);
         }
 
-        // 4. Background Hearts
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
-            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            document.getElementById('heart-container').appendChild(heart);
-            setTimeout(() => heart.remove(), 7000);
+        // 4. Background Ambience
+        function spawnHeart() {
+            const h = document.createElement('div');
+            h.className = 'heart';
+            h.innerHTML = '❤️';
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.fontSize = (Math.random() * 10 + 10) + 'px';
+            h.style.animation = `floatUp ${Math.random() * 2 + 4}s linear forwards`;
+            document.getElementById('heart-container').appendChild(h);
+            setTimeout(() => h.remove(), 6000);
         }
-        setInterval(createHeart, 600);
+        setInterval(spawnHeart, 800);
     </script>
 </body>
 </html>
