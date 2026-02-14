@@ -3,218 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Valentine 💖</title>
+    <title>For My Favorite Person 💖</title>
     <style>
         :root {
             --primary-pink: #ff4d6d;
             --soft-pink: #fff0f3;
             --dark-pink: #c9184a;
             --white: #ffffff;
-            --nav-bg: rgba(255, 255, 255, 0.9);
+            --text-gray: #4a4a4a;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
             background-color: var(--soft-pink);
-            color: var(--dark-pink);
+            color: var(--text-gray);
             overflow-x: hidden;
-            text-align: center;
+            line-height: 1.6;
         }
 
-        /* Navigation */
+        /* --- Modern Navigation --- */
         nav {
-            background: var(--nav-bg);
-            padding: 0.6rem 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 12px 24px;
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 95%;
-            max-width: 800px;
+            width: 90%;
+            max-width: 600px;
             display: flex;
-            justify-content: center;
-            gap: 8px;
+            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 8px 32px rgba(255, 77, 109, 0.2);
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.15);
             z-index: 1000;
-            border-radius: 100px;
-            border: 2px solid white;
-            backdrop-filter: blur(5px);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        nav a, .music-toggle {
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
             text-decoration: none;
-            color: white;
-            background: var(--primary-pink);
+            color: var(--dark-pink);
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: 0.3s;
             padding: 8px 12px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 0.75rem;
-            transition: all 0.3s ease;
+            border-radius: 20px;
+        }
+
+        nav a:hover {
+            background: rgba(255, 77, 109, 0.1);
+        }
+
+        .music-toggle {
+            background: var(--primary-pink);
+            color: white;
             border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
             cursor: pointer;
-            white-space: nowrap;
+            font-size: 0.75rem;
+            transition: 0.3s;
         }
 
-        nav a:hover, .music-toggle:hover {
-            background: var(--dark-pink);
-            transform: translateY(-2px);
-        }
-
-        .music-toggle { background: #333; }
-
-        /* Pages */
+        /* --- Layout & Spacing --- */
         .page {
             display: none;
             min-height: 100vh;
-            padding: 2rem;
-            padding-bottom: 8rem; 
+            padding: 120px 20px 80px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 0.5s ease;
+            text-align: center;
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .active { display: flex; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 { font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 2px 2px white; }
-        p { font-size: 1.1rem; line-height: 1.6; max-width: 500px; margin-bottom: 15px; }
-        
+        h1 { 
+            font-size: 2.8rem; 
+            color: var(--dark-pink);
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        p { 
+            font-size: 1.1rem; 
+            max-width: 550px; 
+            margin-bottom: 2rem;
+            color: var(--text-gray);
+        }
+
         .heart-btn {
             background: var(--primary-pink);
             color: white;
             border: none;
-            padding: 15px 40px;
+            padding: 18px 45px;
             border-radius: 50px;
-            font-size: 1.2rem;
-            margin-top: 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.3);
         }
 
-        .heart-btn:hover { transform: scale(1.1); background: var(--dark-pink); }
-
-        /* Gallery Grid */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            max-width: 600px;
-            margin: 20px 0;
+        .heart-btn:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 77, 109, 0.4);
         }
 
-        .photo-card {
+        /* --- Gallery Card --- */
+        .photo-container {
+            position: relative;
             width: 100%;
-            aspect-ratio: 1;
+            max-width: 400px;
+            margin: 40px 0;
+        }
+
+        .polaroid {
             background: white;
-            padding: 8px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transform: rotate(var(--r));
+            padding: 15px 15px 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            transform: rotate(-3deg);
             transition: 0.3s;
         }
 
-        .photo-card:hover { transform: rotate(0deg) scale(1.05); z-index: 2; }
-
-        .photo-card img {
+        .polaroid img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            border-radius: 2px;
+        }
+
+        /* --- Envelope Animation --- */
+        #letter-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .envelope-wrapper {
+            background: #f0f0f0;
+            width: 300px;
+            height: 200px;
+            position: relative;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .envelope-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0; z-index: 2;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #e0e0e0;
+            transform-origin: top;
+            transition: transform 0.5s 0.3s;
+        }
+
+        .envelope-wrapper.open::before { transform: rotateX(180deg); }
+
+        .letter {
+            position: absolute;
+            bottom: 10px; left: 10px;
+            width: 280px; height: 180px;
+            background: white;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.5s;
+            z-index: 1;
             border-radius: 5px;
         }
 
-        /* Floating & Burst Hearts */
+        .envelope-wrapper.open .letter { transform: translateY(-100px); z-index: 3; }
+
+        /* --- Effects --- */
         .floating-heart {
             position: fixed;
             color: var(--primary-pink);
-            font-size: 1.5rem;
             z-index: -1;
-            animation: float 4s linear infinite;
+            animation: float 5s linear infinite;
+            opacity: 0.6;
             pointer-events: none;
-        }
-
-        .burst-heart {
-            position: absolute;
-            pointer-events: none;
-            animation: burst 0.8s ease-out forwards;
-            font-size: 1.5rem;
         }
 
         @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(110vh) scale(1); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        .burst-heart {
+            position: fixed;
+            pointer-events: none;
+            animation: burst 0.8s ease-out forwards;
+            z-index: 9999;
         }
 
         @keyframes burst {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-        }
-
-        @media (min-width: 768px) {
-            nav { top: 25px; bottom: auto; }
-            .page { padding-top: 6rem; }
-            h1 { font-size: 3.5rem; }
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div id="youtube-player" style="position: absolute; top: -9999px; left: -9999px;"></div>
+    <div id="youtube-player" style="position: absolute; left: -9999px;"></div>
     <div id="heart-container"></div>
 
+    <div id="letter-overlay" onclick="closeLetter()">
+        <div class="envelope-wrapper" id="envelope">
+            <div class="letter">
+                <h3 style="color: var(--dark-pink); margin-bottom: 10px;">My Valentine ❤️</h3>
+                <p style="font-size: 0.9rem;">You just made me the happiest person. I can't wait for every tomorrow with you. I love you! ✨</p>
+                <button class="music-toggle" onclick="closeLetter()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <nav>
-        <a href="javascript:void(0)" onclick="showPage('home')">🏠 Home</a>
-        <a href="javascript:void(0)" onclick="showPage('story')">📖 Story</a>
-        <a href="javascript:void(0)" onclick="showPage('gallery')">🖼️ Gallery</a>
-        <a href="javascript:void(0)" onclick="showPage('message')">💌 Message</a>
-        <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵 Play</button>
+        <div class="nav-links">
+            <a href="javascript:void(0)" onclick="showPage('home')">Home</a>
+            <a href="javascript:void(0)" onclick="showPage('story')">Story</a>
+            <a href="javascript:void(0)" onclick="showPage('gallery')">Gallery</a>
+        </div>
+        <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵 Play "Ishq"</button>
     </nav>
 
     <section id="home" class="page active">
-        <h1>Hi Favourite! 🌹</h1>
-        <div class="photo-card" style="--r: -3deg; width: 250px;">
-            <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" alt="Us">
+        <h1>Hi, Beautiful. ✨</h1>
+        <p>Take a moment to step away from the world and enter this little space I built just for you.</p>
+        <div class="photo-container">
+            <div class="polaroid">
+                <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" alt="Us">
+            </div>
         </div>
-        <p>I made this little website just to show you how much you mean to me.</p>
-        <button class="heart-btn" onclick="showPage('story')">Our Story ➡</button>
+        <button class="heart-btn" onclick="showPage('story')">Our Story</button>
     </section>
 
     <section id="story" class="page">
-        <h1>Our Story 📖</h1>
-        <p>They say "Ishq" is a journey, and I'm so glad I'm walking it with you.</p>
-        <p>From the first time we talked to right now, every moment has been a treasure.</p>
-        <button class="heart-btn" onclick="showPage('gallery')">See Memories ➡</button>
+        <h1>The Best Part of My Day.</h1>
+        <p>Every time "Ishq" plays, it reminds me of us. From the small laughs to the big dreams, I cherish every single second.</p>
+        <button class="heart-btn" onclick="showPage('gallery')">Our Moments</button>
     </section>
 
     <section id="gallery" class="page">
-        <h1>Memories 🖼️</h1>
-        <div class="gallery-grid">
-            <div class="photo-card" style="--r: 2deg;"><img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg"></div>
-            <div class="photo-card" style="--r: -4deg;"><img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg"></div>
-            <div class="photo-card" style="--r: 3deg;"><img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg"></div>
-            <div class="photo-card" style="--r: -2deg;"><img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg"></div>
-        </div>
-        <button class="heart-btn" onclick="showPage('message')">Final Note ➡</button>
-    </section>
-
-    <section id="message" class="page">
         <h1>Will you be my Valentine? 💌</h1>
-        <p>No matter where we go or what we do, I just want you by my side.</p>
-        <div id="burst-origin">
-            <button class="heart-btn" onclick="handleYes(event)">Yes! ❤️</button>
-        </div>
+        <p>I don't need the world, I just need you. So, what do you say?</p>
+        <button class="heart-btn" onclick="handleYes(event)">Yes, I will! ❤️</button>
     </section>
 
     <script>
@@ -241,7 +300,7 @@
                 btn.innerHTML = "⏸ Pause";
             } else {
                 player.pauseVideo();
-                btn.innerHTML = "🎵 Play";
+                btn.innerHTML = "🎵 Play \"Ishq\"";
             }
         }
 
@@ -249,23 +308,30 @@
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-            window.scrollTo(0,0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 3. Heart Burst Effect
+        // 3. Handle Yes & Envelope
         function handleYes(event) {
-            const btn = event.target;
-            const rect = btn.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-
-            for (let i = 0; i < 30; i++) {
-                createBurstHeart(centerX, centerY);
+            // Heart Burst
+            for (let i = 0; i < 40; i++) {
+                createBurstHeart(event.clientX, event.clientY);
             }
-            
+
+            // Show Envelope
             setTimeout(() => {
-                alert("Best day ever! I love you! ❤️✨");
-            }, 500);
+                const overlay = document.getElementById('letter-overlay');
+                const env = document.getElementById('envelope');
+                overlay.style.display = 'flex';
+                setTimeout(() => env.classList.add('open'), 100);
+            }, 600);
+        }
+
+        function closeLetter() {
+            const env = document.getElementById('envelope');
+            const overlay = document.getElementById('letter-overlay');
+            env.classList.remove('open');
+            setTimeout(() => overlay.style.display = 'none', 500);
         }
 
         function createBurstHeart(x, y) {
@@ -274,13 +340,10 @@
             heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random()*4)];
             heart.style.left = x + 'px';
             heart.style.top = y + 'px';
-            
-            // Random trajectory
-            const tx = (Math.random() - 0.5) * 400;
-            const ty = (Math.random() - 0.5) * 400;
+            const tx = (Math.random() - 0.5) * 600;
+            const ty = (Math.random() - 0.5) * 600;
             heart.style.setProperty('--tx', `${tx}px`);
             heart.style.setProperty('--ty', `${ty}px`);
-
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 800);
         }
@@ -291,12 +354,12 @@
             heart.className = 'floating-heart';
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
             document.getElementById('heart-container').appendChild(heart);
-            setTimeout(() => heart.remove(), 4000);
+            setTimeout(() => heart.remove(), 7000);
         }
-        setInterval(createHeart, 400);
+        setInterval(createHeart, 600);
     </script>
 </body>
 </html>
