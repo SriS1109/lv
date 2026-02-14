@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Royal Proclamation of Love 📜</title>
+    <title>Our Love Story 📜</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Dancing+Script:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -71,6 +71,26 @@
         .active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
+        /* --- Polaroid Gallery --- */
+        .gallery-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 10px 10px 25px 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: rotate(var(--r));
+            transition: 0.3s;
+            width: 150px;
+        }
+        .polaroid:hover { transform: rotate(0deg) scale(1.1); z-index: 10; }
+        .polaroid img { width: 100%; height: 130px; object-fit: cover; }
+
         .cta-btn {
             background: var(--velvet);
             color: white;
@@ -83,7 +103,6 @@
             box-shadow: 0 10px 25px rgba(128, 15, 47, 0.3);
             transition: 0.3s;
         }
-        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(128, 15, 47, 0.4); }
 
         /* --- THE MAGIC SCROLL SYSTEM --- */
         #scroll-overlay {
@@ -103,10 +122,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: transform 0.5s ease;
         }
 
-        /* The Wooden Rollers */
         .scroll-roller {
             width: 380px;
             height: 30px;
@@ -114,96 +131,59 @@
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             z-index: 100;
-            position: relative;
         }
 
-        .scroll-roller::after {
-            content: "";
-            position: absolute;
-            top: 50%; left: -10px; right: -10px;
-            height: 40px;
-            background: #3e2723;
-            transform: translateY(-50%);
-            border-radius: 5px;
-            z-index: -1;
-        }
-
-        /* The Parchment */
         .scroll-content {
             width: 340px;
-            height: 0; /* Starts closed */
+            height: 0;
             background: var(--parchment);
-            background-image: linear-gradient(to right, rgba(0,0,0,0.05), transparent 5%, transparent 95%, rgba(0,0,0,0.05)),
-                              url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-            overflow: hidden;
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            overflow-y: auto;
+            overflow-x: hidden;
             transition: height 1.5s cubic-bezier(0.19, 1, 0.22, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 0 30px;
             box-shadow: inset 0 0 50px rgba(139, 69, 19, 0.2);
-            position: relative;
+            scrollbar-width: none;
         }
+        .scroll-content::-webkit-scrollbar { display: none; }
 
-        /* State when unrolled */
-        .unrolled .scroll-content {
-            height: 500px;
-            padding: 50px 30px;
+        .unrolled .scroll-content { height: 550px; padding: 40px 30px; }
+
+        .featured-photo {
+            width: 100%;
+            max-width: 200px;
+            border: 8px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: 1s 1s;
         }
+        .unrolled .featured-photo { opacity: 1; transform: translateY(0); }
 
         .scroll-text {
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 1s 0.8s, transform 1s 0.8s;
+            transition: opacity 1s 1.2s, transform 1s 1.2s;
             text-align: center;
         }
+        .unrolled .scroll-text { opacity: 1; transform: translateY(0); }
 
-        .unrolled .scroll-text {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .scroll-text h2 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: #5d4037; }
+        .scroll-text p { font-family: 'Dancing Script', cursive; font-size: 1.3rem; color: #3e2723; font-weight: 700; }
 
-        .scroll-text h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            color: #5d4037;
-            margin-bottom: 20px;
-        }
+        .close-scroll { margin-top: 30px; color: #8d6e63; cursor: pointer; border-bottom: 1px solid #8d6e63; font-size: 0.8rem; }
 
-        .scroll-text p {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.4rem;
-            color: #3e2723;
-            font-weight: 700;
-            line-height: 1.5;
-        }
-
-        .close-scroll {
-            margin-top: 40px;
-            font-size: 0.8rem;
-            color: #8d6e63;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            border-bottom: 1px solid #8d6e63;
-            opacity: 0.7;
-        }
-
-        /* --- Ambient Hearts --- */
-        .heart-float {
-            position: fixed;
-            pointer-events: none;
-            z-index: -1;
-            animation: floatUp linear forwards;
-        }
-        @keyframes floatUp {
-            to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
-        }
+        /* Hearts */
+        .heart-float { position: fixed; pointer-events: none; z-index: -1; animation: floatUp linear forwards; }
+        @keyframes floatUp { to { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
 
         @media (max-width: 500px) {
             .scroll-roller { width: 310px; }
             .scroll-content { width: 280px; }
-            .unrolled .scroll-content { height: 450px; }
         }
     </style>
 </head>
@@ -214,16 +194,15 @@
     <div id="scroll-overlay">
         <div class="scroll-container" id="scroll-box">
             <div class="scroll-roller top"></div>
-            
             <div class="scroll-content">
+                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400" class="featured-photo" alt="Us">
                 <div class="scroll-text">
-                    <h2>Dearest One,</h2>
+                    <h2>To My Everything,</h2>
                     <p>I crafted this ancient scroll to tell you that you are my most precious treasure. You make every day feel like a fairytale.</p>
                     <p style="margin-top: 15px;">Happy Valentine's Day! ❤️</p>
                     <div class="close-scroll" onclick="closeScroll()">Fold Scroll</div>
                 </div>
             </div>
-
             <div class="scroll-roller bottom"></div>
         </div>
     </div>
@@ -231,20 +210,33 @@
     <nav>
         <a href="#" onclick="showPage('home')">Home</a>
         <a href="#" onclick="showPage('story')">Journey</a>
-        <a href="#" onclick="showPage('gallery')">Gallery</a>
+        <a href="#" onclick="showPage('gallery')">The Ask</a>
         <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵 Play</button>
     </nav>
 
     <section id="home" class="page active">
-        <h1 style="font-family: 'Playfair Display'; font-size: 3.5rem; color: var(--velvet);">Hello, Beautiful.</h1>
-        <p style="font-size: 1.2rem; max-width: 600px; margin: 20px 0 40px;">Welcome to your own private corner of the world. Ready to see our story?</p>
-        <button class="cta-btn" onclick="showPage('story')">Enter the Story</button>
+        <h1 style="font-size: 3.5rem;">Hello, Handsome.</h1>
+        <p style="font-size: 1.2rem; margin: 20px 0 40px;">Ready to walk down memory lane?</p>
+        <button class="cta-btn" onclick="showPage('story')">Enter Our Story</button>
     </section>
 
     <section id="story" class="page">
-        <h1 style="font-family: 'Playfair Display'; color: var(--velvet);">Our Journey</h1>
-        <p style="font-size: 1.2rem; max-width: 600px; margin: 20px 0 40px;">From the first time we spoke to this very moment, every second has been magic.</p>
-        <button class="cta-btn" onclick="showPage('gallery')">The Final Chapter</button>
+        <h1>Our Moments</h1>
+        <p>Every second spent with you is a second I treasure.</p>
+        
+        <div class="gallery-container">
+            <div class="polaroid" style="--r: -3deg">
+                <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=300" alt="Memory 1">
+            </div>
+            <div class="polaroid" style="--r: 4deg">
+                <img src="https://images.unsplash.com/photo-1516589174184-c68526674fd6?q=80&w=300" alt="Memory 2">
+            </div>
+            <div class="polaroid" style="--r: -2deg">
+                <img src="https://images.unsplash.com/photo-1494972308935-a98314f999c0?q=80&w=300" alt="Memory 3">
+            </div>
+        </div>
+
+        <button class="cta-btn" onclick="showPage('gallery')" style="margin-top: 40px;">Final Chapter</button>
     </section>
 
     <section id="gallery" class="page">
@@ -279,22 +271,18 @@
             window.scrollTo(0,0);
         }
 
-        // Scroll Interactions
+        // Scroll
         function openScroll() {
             document.getElementById('scroll-overlay').style.display = 'flex';
-            setTimeout(() => {
-                document.getElementById('scroll-box').classList.add('unrolled');
-            }, 100);
+            setTimeout(() => { document.getElementById('scroll-box').classList.add('unrolled'); }, 100);
         }
 
         function closeScroll() {
             document.getElementById('scroll-box').classList.remove('unrolled');
-            setTimeout(() => {
-                document.getElementById('scroll-overlay').style.display = 'none';
-            }, 1500); // Wait for unroll animation to finish
+            setTimeout(() => { document.getElementById('scroll-overlay').style.display = 'none'; }, 1500);
         }
 
-        // Interactive Heart Background
+        // Background Hearts
         function spawnHeart() {
             const h = document.createElement('div');
             h.className = 'heart-float';
