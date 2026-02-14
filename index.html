@@ -11,8 +11,8 @@
             --soft-pink: #fff0f3;
             --dark-pink: #c9184a;
             --velvet: #800f2f;
-            --envelope-base: #f8edeb;
-            --envelope-flap: #f4d3d2;
+            --envelope-base: #fdf0ef;
+            --envelope-flap: #f7d6d5;
             --text-main: #2d2d2d;
         }
 
@@ -27,12 +27,12 @@
             background-color: var(--soft-pink);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            line-height: 1.8; /* Increased spacing between text lines */
+            line-height: 1.8;
         }
 
         /* --- Symmetrical Navigation --- */
         nav {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             padding: 12px 20px;
@@ -41,58 +41,47 @@
             left: 50%;
             transform: translateX(-50%);
             width: 95%;
-            max-width: 850px;
+            max-width: 600px;
             display: flex;
-            justify-content: center; /* Center the group */
-            gap: 10px; /* Space between buttons */
+            justify-content: center;
+            gap: 12px;
             z-index: 1000;
             border-radius: 100px;
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* Making all nav items identical in size */
         nav a, .music-toggle {
             text-decoration: none;
             background: var(--primary-pink);
             color: white !important;
             font-weight: 600;
             font-size: 0.75rem;
-            height: 40px;
-            width: 100px; /* Fixed width for all buttons */
+            height: 42px;
+            width: 95px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50px;
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 12px rgba(255, 77, 109, 0.2);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border: none;
             cursor: pointer;
         }
 
-        /* Special color for Play button to distinguish it slightly but keep size same */
-        .music-toggle {
-            background: var(--velvet);
-            width: 110px; /* Slightly wider to accommodate "Pause" text later */
-        }
+        .music-toggle { background: var(--velvet); width: 105px; }
+        nav a:hover, .music-toggle:hover { transform: translateY(-3px); filter: brightness(1.1); }
 
-        nav a:hover, .music-toggle:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 77, 109, 0.3);
-            filter: brightness(1.1);
-        }
-
-        /* --- Page Layout & Spacing --- */
+        /* --- Page Layout --- */
         .page {
             display: none;
             min-height: 100vh;
-            padding: 160px 20px 80px;
+            padding: 160px 25px 80px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            animation: fadeIn 1s ease;
+            animation: fadeIn 0.8s ease;
         }
 
         .active { display: flex; }
@@ -110,26 +99,23 @@
         }
 
         p {
-            font-size: clamp(0.95rem, 4.5vw, 1.1rem);
+            font-size: clamp(1rem, 4.5vw, 1.1rem);
             max-width: 500px;
-            margin-bottom: 50px; /* More space before the button */
+            margin-bottom: 50px;
             color: var(--text-main);
-            padding: 0 15px;
         }
 
         .polaroid {
             background: white;
             padding: 12px 12px 50px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-            border-radius: 2px;
             transform: rotate(-2deg);
             max-width: 280px;
-            margin-bottom: 50px; /* More space after photo */
+            margin-bottom: 50px;
         }
 
-        .polaroid img { width: 100%; height: auto; display: block; }
+        .polaroid img { width: 100%; display: block; }
 
-        /* Journey/CTA Button with more spacing */
         .cta-btn {
             background: var(--velvet);
             color: white;
@@ -140,56 +126,81 @@
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
-            margin-top: 10px; /* Extra breathing room */
         }
 
-        /* --- Envelope Styles --- */
+        /* --- IMPROVED 3D ENVELOPE --- */
         #letter-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(128, 15, 47, 0.2);
-            backdrop-filter: blur(15px);
+            background: rgba(45, 45, 45, 0.4);
+            backdrop-filter: blur(8px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            cursor: zoom-out; /* Hint that clicking anywhere closes it */
+        }
+
+        .envelope-container {
+            position: relative;
+            width: 320px;
+            height: 200px;
+            perspective: 1000px;
+            cursor: default;
         }
 
         .envelope-wrapper {
             background: var(--envelope-base);
-            width: 320px;
-            height: 200px;
-            position: relative;
-            border-radius: 0 0 15px 15px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            bottom: 0;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            z-index: 10;
         }
 
+        /* Flap with smoother 3D rotation */
         .envelope-wrapper::before {
             content: "";
             position: absolute;
-            top: 0; left: 0; z-index: 4;
+            top: 0; left: 0;
+            width: 0; height: 0;
             border-left: 160px solid transparent;
             border-right: 160px solid transparent;
-            border-top: 120px solid var(--envelope-flap);
+            border-top: 110px solid var(--envelope-flap);
             transform-origin: top;
-            transition: transform 0.6s ease-in-out;
+            transition: transform 0.5s ease-in-out;
+            z-index: 30;
         }
 
-        .envelope-wrapper.open::before { transform: rotateX(180deg); z-index: 1; }
+        .envelope-container.open .envelope-wrapper::before {
+            transform: rotateX(180deg);
+        }
 
+        /* The actual letter */
         .letter {
             position: absolute;
-            bottom: 5px; left: 5px;
-            width: 310px;
-            background: #fffdfb;
-            padding: 30px 20px;
+            top: 10px;
+            left: 10px;
+            width: 300px;
+            height: 180px;
+            background: white;
+            padding: 25px;
             text-align: center;
-            transition: transform 0.7s ease;
-            z-index: 2;
-            border-radius: 8px;
+            transition: transform 0.6s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            z-index: 20;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .envelope-wrapper.open .letter { transform: translateY(-130px); z-index: 5; }
+        .envelope-container.open .letter {
+            transform: translateY(-130px) scale(1.05);
+            z-index: 40; /* Pulls letter to the front */
+        }
 
         .floating-heart {
             position: fixed;
@@ -205,10 +216,9 @@
         }
 
         @media (max-width: 600px) {
-            nav { gap: 5px; padding: 10px; }
-            nav a, .music-toggle { width: 75px; font-size: 0.6rem; height: 35px; }
-            .music-toggle { width: 85px; }
-            .page { padding-top: 140px; }
+            nav { gap: 8px; width: 98%; }
+            nav a, .music-toggle { width: 78px; font-size: 0.65rem; height: 38px; }
+            .page { padding-top: 130px; }
         }
     </style>
 </head>
@@ -218,10 +228,12 @@
     <div id="heart-container"></div>
 
     <div id="letter-overlay" onclick="closeLetter()">
-        <div class="envelope-wrapper" id="envelope">
+        <div class="envelope-container" id="envelope-container" onclick="event.stopPropagation()">
+            <div class="envelope-wrapper"></div>
             <div class="letter">
                 <h3 style="font-family: 'Dancing Script'; font-size: 2rem; color: var(--dark-pink);">Forever Yours</h3>
-                <p style="font-size: 0.85rem; line-height: 1.4; margin-top: 10px;">You are my favorite thought. I love you more every single day! ❤️</p>
+                <p style="font-size: 0.9rem; line-height: 1.5; margin-top: 15px; color: #444;">You're my greatest adventure. I love you more than words could ever express! ❤️</p>
+                <span style="font-size: 0.7rem; color: #999; margin-top: 10px;">(Tap anywhere to close)</span>
             </div>
         </div>
     </div>
@@ -238,7 +250,7 @@
         <div class="polaroid">
             <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" alt="Us">
         </div>
-        <p>I built this little corner of the internet just to show you how much you mean to me. Every moment we share is a treasure.</p>
+        <p>I built this little corner of the internet just to show you how much you mean to me. Ready to walk through our story?</p>
         <button class="cta-btn" onclick="showPage('story')">Our Journey</button>
     </section>
 
@@ -247,19 +259,19 @@
         <div class="polaroid" style="transform: rotate(3deg);">
             <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg">
         </div>
-        <p>They say time flies when you're having fun, but with you, it feels like every second is a beautiful story written just for us.</p>
+        <p>They say home is where the heart is. For me, home is wherever you are. Every laugh we've shared is my favorite memory.</p>
         <button class="cta-btn" onclick="showPage('gallery')">The Question</button>
     </section>
 
     <section id="gallery" class="page">
-        <h1 style="font-family: 'Dancing Script'; font-size: 3rem;">One Question...</h1>
-        <p>No matter where we go or what we do, I just want you by my side. You're my home and my heart.</p>
+        <h1 style="font-family: 'Dancing Script'; font-size: 3rem;">One Last Thing...</h1>
+        <p>I want to spend all my tomorrows with you. You're my favorite person in the whole world.</p>
         <h1 style="margin-top: -20px;">Will you be my Valentine?</h1>
         <button class="cta-btn" onclick="handleYes(event)" style="background: var(--primary-pink);">Yes, I will! ❤️</button>
     </section>
 
     <script>
-        // YouTube API
+        // YouTube API Logic
         var player;
         var playerReady = false;
         function onYouTubeIframeAPIReady() {
@@ -286,15 +298,19 @@
             }
         }
 
+        // Navigation
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Interaction Logic
         function handleYes(event) {
             const x = event.clientX || window.innerWidth/2;
             const y = event.clientY || window.innerHeight/2;
+            
+            // Burst animation
             for (let i = 0; i < 30; i++) {
                 const h = document.createElement('div');
                 h.innerHTML = '❤️';
@@ -308,17 +324,27 @@
                 document.body.appendChild(h);
                 setTimeout(() => h.remove(), 1000);
             }
+
+            // Open Envelope after delay
             setTimeout(() => {
                 document.getElementById('letter-overlay').style.display = 'flex';
-                setTimeout(() => document.getElementById('envelope').classList.add('open'), 200);
+                // Trigger opening animation
+                setTimeout(() => {
+                    document.getElementById('envelope-container').classList.add('open');
+                }, 300);
             }, 500);
         }
 
         function closeLetter() {
-            document.getElementById('envelope').classList.remove('open');
-            setTimeout(() => document.getElementById('letter-overlay').style.display = 'none', 500);
+            const container = document.getElementById('envelope-container');
+            container.classList.remove('open');
+            // Wait for letter to slide down before hiding overlay
+            setTimeout(() => {
+                document.getElementById('letter-overlay').style.display = 'none';
+            }, 500);
         }
 
+        // Background Hearts
         function spawnHeart() {
             const h = document.createElement('div');
             h.className = 'floating-heart';
