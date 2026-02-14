@@ -27,17 +27,19 @@
             text-align: center;
         }
 
+        /* Navigation */
         nav {
             background: var(--nav-bg);
-            padding: 0.8rem 1.5rem;
+            padding: 0.6rem 1rem;
             position: fixed;
-            bottom: 25px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             width: 95%;
-            max-width: 1200px;
+            max-width: 800px;
             display: flex;
-            justify-content: space-evenly;
+            justify-content: center;
+            gap: 8px;
             align-items: center;
             box-shadow: 0 8px 32px rgba(255, 77, 109, 0.2);
             z-index: 1000;
@@ -50,13 +52,14 @@
             text-decoration: none;
             color: white;
             background: var(--primary-pink);
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         nav a:hover, .music-toggle:hover {
@@ -64,8 +67,9 @@
             transform: translateY(-2px);
         }
 
-        .music-toggle { background: var(--dark-pink); }
+        .music-toggle { background: #333; }
 
+        /* Pages */
         .page {
             display: none;
             min-height: 100vh;
@@ -84,37 +88,68 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 { font-size: 2.2rem; margin-bottom: 1rem; }
-        p { font-size: 1rem; line-height: 1.6; max-width: 500px; }
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 2px 2px white; }
+        p { font-size: 1.1rem; line-height: 1.6; max-width: 500px; margin-bottom: 15px; }
         
         .heart-btn {
             background: var(--primary-pink);
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 15px 40px;
             border-radius: 50px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-top: 20px;
             cursor: pointer;
             transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
         }
 
-        .photo-placeholder {
-            width: 250px;
-            height: 250px;
-            background: #ffe5ec;
-            border: 5px solid white;
-            border-radius: 15px;
+        .heart-btn:hover { transform: scale(1.1); background: var(--dark-pink); }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 600px;
             margin: 20px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
+        .photo-card {
+            width: 100%;
+            aspect-ratio: 1;
+            background: white;
+            padding: 8px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transform: rotate(var(--r));
+            transition: 0.3s;
+        }
+
+        .photo-card:hover { transform: rotate(0deg) scale(1.05); z-index: 2; }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        /* Floating & Burst Hearts */
         .floating-heart {
             position: fixed;
             color: var(--primary-pink);
             font-size: 1.5rem;
             z-index: -1;
             animation: float 4s linear infinite;
+            pointer-events: none;
+        }
+
+        .burst-heart {
+            position: absolute;
+            pointer-events: none;
+            animation: burst 0.8s ease-out forwards;
+            font-size: 1.5rem;
         }
 
         @keyframes float {
@@ -122,107 +157,146 @@
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
+        @keyframes burst {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
         @media (min-width: 768px) {
             nav { top: 25px; bottom: auto; }
             .page { padding-top: 6rem; }
+            h1 { font-size: 3.5rem; }
         }
     </style>
 </head>
 <body>
 
     <div id="youtube-player" style="position: absolute; top: -9999px; left: -9999px;"></div>
-
     <div id="heart-container"></div>
 
     <nav>
-        <a href="javascript:void(0)" onclick="showPage('home')">Home</a>
-        <a href="javascript:void(0)" onclick="showPage('story')">Story</a>
-        <a href="javascript:void(0)" onclick="showPage('gallery')">Gallery</a>
+        <a href="javascript:void(0)" onclick="showPage('home')">🏠 Home</a>
+        <a href="javascript:void(0)" onclick="showPage('story')">📖 Story</a>
+        <a href="javascript:void(0)" onclick="showPage('gallery')">🖼️ Gallery</a>
+        <a href="javascript:void(0)" onclick="showPage('message')">💌 Message</a>
         <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵 Play</button>
     </nav>
 
     <section id="home" class="page active">
-        <h1>Happy Valentine's Day! 🌹</h1>
-        <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" class="photo-placeholder">
-        <p>I made this special little corner just for you.</p>
-        <button class="heart-btn" onclick="showPage('story')">Start Here</button>
+        <h1>Hi Favourite! 🌹</h1>
+        <div class="photo-card" style="--r: -3deg; width: 250px;">
+            <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" alt="Us">
+        </div>
+        <p>I made this little website just to show you how much you mean to me.</p>
+        <button class="heart-btn" onclick="showPage('story')">Our Story ➡</button>
     </section>
 
     <section id="story" class="page">
-        <h1>Our Story</h1>
-        <p>Every second with you is a blessing. "Ishq" feels different when I'm with you.</p>
-        <button class="heart-btn" onclick="showPage('gallery')">See Memories</button>
+        <h1>Our Story 📖</h1>
+        <p>They say "Ishq" is a journey, and I'm so glad I'm walking it with you.</p>
+        <p>From the first time we talked to right now, every moment has been a treasure.</p>
+        <button class="heart-btn" onclick="showPage('gallery')">See Memories ➡</button>
     </section>
 
     <section id="gallery" class="page">
-        <h1>Our Moments</h1>
-        <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" class="photo-placeholder">
-        <p>Will you be my Valentine?</p>
-        <button class="heart-btn" onclick="alert('I love you! ❤️')">Yes! ❤️</button>
+        <h1>Memories 🖼️</h1>
+        <div class="gallery-grid">
+            <div class="photo-card" style="--r: 2deg;"><img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg"></div>
+            <div class="photo-card" style="--r: -4deg;"><img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg"></div>
+            <div class="photo-card" style="--r: 3deg;"><img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg"></div>
+            <div class="photo-card" style="--r: -2deg;"><img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg"></div>
+        </div>
+        <button class="heart-btn" onclick="showPage('message')">Final Note ➡</button>
+    </section>
+
+    <section id="message" class="page">
+        <h1>Will you be my Valentine? 💌</h1>
+        <p>No matter where we go or what we do, I just want you by my side.</p>
+        <div id="burst-origin">
+            <button class="heart-btn" onclick="handleYes(event)">Yes! ❤️</button>
+        </div>
     </section>
 
     <script>
-        // 1. YouTube API Integration
+        // 1. YouTube Integration
         var player;
         var playerReady = false;
-
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
-                height: '0',
-                width: '0',
-                videoId: 'hHuG7FIKgtc', // Ishq by Faheem Abdullah
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': 'hHuG7FIKgtc'
-                },
-                events: {
-                    'onReady': function() { playerReady = true; }
-                }
+                height: '0', width: '0', videoId: 'hHuG7FIKgtc',
+                playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': 'hHuG7FIKgtc' },
+                events: { 'onReady': function() { playerReady = true; } }
             });
         }
-
-        // Load YouTube API
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // 2. Music Toggle
-        let isPlaying = false;
         function toggleMusic() {
             if (!playerReady) return;
             const btn = document.getElementById('musicBtn');
-            if (!isPlaying) {
+            if (player.getPlayerState() !== 1) {
                 player.playVideo();
                 btn.innerHTML = "⏸ Pause";
-                isPlaying = true;
             } else {
                 player.pauseVideo();
                 btn.innerHTML = "🎵 Play";
-                isPlaying = false;
             }
         }
 
-        // 3. Page Swapper
+        // 2. Navigation
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             window.scrollTo(0,0);
         }
 
-        // 4. Hearts
+        // 3. Heart Burst Effect
+        function handleYes(event) {
+            const btn = event.target;
+            const rect = btn.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            for (let i = 0; i < 30; i++) {
+                createBurstHeart(centerX, centerY);
+            }
+            
+            setTimeout(() => {
+                alert("Best day ever! I love you! ❤️✨");
+            }, 500);
+        }
+
+        function createBurstHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'burst-heart';
+            heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random()*4)];
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            
+            // Random trajectory
+            const tx = (Math.random() - 0.5) * 400;
+            const ty = (Math.random() - 0.5) * 400;
+            heart.style.setProperty('--tx', `${tx}px`);
+            heart.style.setProperty('--ty', `${ty}px`);
+
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 800);
+        }
+
+        // 4. Background Hearts
         function createHeart() {
             const heart = document.createElement('div');
             heart.className = 'floating-heart';
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
             heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
             document.getElementById('heart-container').appendChild(heart);
             setTimeout(() => heart.remove(), 4000);
         }
-        setInterval(createHeart, 300);
+        setInterval(createHeart, 400);
     </script>
 </body>
 </html>
