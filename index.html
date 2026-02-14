@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Valentine 💖</title>
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #fff0f3;
+            --dark-pink: #c9184a;
+            --white: #ffffff;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--soft-pink);
+            color: var(--dark-pink);
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        nav {
+            background: var(--nav-bg);
+            padding: 0.8rem 1.5rem;
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 600px;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(255, 77, 109, 0.2);
+            z-index: 1000;
+            border-radius: 100px;
+            border: 2px solid white;
+            backdrop-filter: blur(5px);
+        }
+
+        nav a, .music-toggle {
+            text-decoration: none;
+            color: white;
+            background: var(--primary-pink);
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        nav a:hover, .music-toggle:hover {
+            background: var(--dark-pink);
+            transform: translateY(-2px);
+        }
+
+        .music-toggle { background: var(--dark-pink); }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 2rem;
+            padding-bottom: 8rem; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { font-size: 2.2rem; margin-bottom: 1rem; }
+        p { font-size: 1rem; line-height: 1.6; max-width: 500px; }
+        
+        .heart-btn {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .photo-placeholder {
+            width: 250px;
+            height: 250px;
+            background: #ffe5ec;
+            border: 5px solid white;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .floating-heart {
+            position: fixed;
+            color: var(--primary-pink);
+            font-size: 1.5rem;
+            z-index: -1;
+            animation: float 4s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        @media (min-width: 768px) {
+            nav { top: 25px; bottom: auto; }
+            .page { padding-top: 6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="youtube-player" style="position: absolute; top: -9999px; left: -9999px;"></div>
+
+    <div id="heart-container"></div>
+
+    <nav>
+        <a href="javascript:void(0)" onclick="showPage('home')">Home</a>
+        <a href="javascript:void(0)" onclick="showPage('story')">Story</a>
+        <a href="javascript:void(0)" onclick="showPage('gallery')">Gallery</a>
+        <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵 Play</button>
+    </nav>
+
+    <section id="home" class="page active">
+        <h1>Happy Valentine's Day! 🌹</h1>
+        <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" class="photo-placeholder">
+        <p>I made this special little corner just for you.</p>
+        <button class="heart-btn" onclick="showPage('story')">Start Here</button>
+    </section>
+
+    <section id="story" class="page">
+        <h1>Our Story</h1>
+        <p>Every second with you is a blessing. "Ishq" feels different when I'm with you.</p>
+        <button class="heart-btn" onclick="showPage('gallery')">See Memories</button>
+    </section>
+
+    <section id="gallery" class="page">
+        <h1>Our Moments</h1>
+        <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" class="photo-placeholder">
+        <p>Will you be my Valentine?</p>
+        <button class="heart-btn" onclick="alert('I love you! ❤️')">Yes! ❤️</button>
+    </section>
+
+    <script>
+        // 1. YouTube API Integration
+        var player;
+        var playerReady = false;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '0',
+                width: '0',
+                videoId: 'hHuG7FIKgtc', // Ishq by Faheem Abdullah
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'hHuG7FIKgtc'
+                },
+                events: {
+                    'onReady': function() { playerReady = true; }
+                }
+            });
+        }
+
+        // Load YouTube API
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 2. Music Toggle
+        let isPlaying = false;
+        function toggleMusic() {
+            if (!playerReady) return;
+            const btn = document.getElementById('musicBtn');
+            if (!isPlaying) {
+                player.playVideo();
+                btn.innerHTML = "⏸ Pause";
+                isPlaying = true;
+            } else {
+                player.pauseVideo();
+                btn.innerHTML = "🎵 Play";
+                isPlaying = false;
+            }
+        }
+
+        // 3. Page Swapper
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        // 4. Hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.getElementById('heart-container').appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>
