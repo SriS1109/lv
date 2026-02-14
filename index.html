@@ -27,7 +27,7 @@
             line-height: 1.6;
         }
 
-        /* --- Modern Extended Navigation --- */
+        /* --- Modern Balanced Navigation --- */
         nav {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(15px);
@@ -36,10 +36,11 @@
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 95%; /* Longer Bar */
+            width: 95%;
             max-width: 1100px;
-            display: flex;
-            justify-content: space-between; /* Pushes items to extremes */
+            display: grid;
+            /* Grid with 3 columns to ensure true centering of the middle group */
+            grid-template-columns: 1fr auto 1fr; 
             align-items: center;
             box-shadow: 0 10px 30px rgba(255, 77, 109, 0.1);
             z-index: 1000;
@@ -47,14 +48,16 @@
             border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
+        /* Middle Links */
         .nav-links {
+            grid-column: 2; /* Forces this to the middle column */
             display: flex;
-            gap: 20px;
+            gap: 15px;
         }
 
         nav a {
             text-decoration: none;
-            color: var(--primary-pink); /* Pink Links */
+            color: var(--primary-pink);
             font-weight: 600;
             font-size: 0.9rem;
             transition: 0.3s;
@@ -65,6 +68,13 @@
         nav a:hover {
             background: var(--primary-pink);
             color: white;
+        }
+
+        /* Right Button Container */
+        .nav-right {
+            grid-column: 3;
+            display: flex;
+            justify-content: flex-end;
         }
 
         .music-toggle {
@@ -78,6 +88,7 @@
             font-size: 0.8rem;
             transition: 0.3s;
             box-shadow: 0 4px 10px rgba(255, 77, 109, 0.2);
+            white-space: nowrap;
         }
 
         .music-toggle:hover {
@@ -85,7 +96,26 @@
             transform: scale(1.05);
         }
 
-        /* --- Layout --- */
+        /* Responsive Nav for Mobile */
+        @media (max-width: 600px) {
+            nav {
+                padding: 10px 15px;
+                grid-template-columns: 1fr auto; /* Adjust for small screens */
+            }
+            .nav-links {
+                grid-column: 1;
+                gap: 5px;
+            }
+            nav a {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+            .nav-right {
+                grid-column: 2;
+            }
+        }
+
+        /* --- Page & Layout --- */
         .page {
             display: none;
             min-height: 100vh;
@@ -94,28 +124,20 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeIn 0.8s ease;
         }
 
         .active { display: flex; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         h1 { 
-            font-size: clamp(2.5rem, 8vw, 3.5rem); 
+            font-size: clamp(2rem, 8vw, 3.5rem); 
             color: var(--dark-pink);
             margin-bottom: 1.5rem;
-            letter-spacing: -1.5px;
-        }
-
-        p { 
-            font-size: 1.1rem; 
-            max-width: 550px; 
-            margin-bottom: 2rem;
-            color: var(--text-gray);
         }
 
         .heart-btn {
@@ -127,33 +149,21 @@
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.4s;
-            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.3);
+            transition: 0.3s;
         }
 
-        .heart-btn:hover {
-            transform: translateY(-3px);
-            background: var(--dark-pink);
-        }
-
-        /* --- Polaroid Styling --- */
         .polaroid {
             background: white;
             padding: 15px 15px 45px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-            border-radius: 2px;
             transform: rotate(-2deg);
             max-width: 320px;
             margin: 30px 0;
         }
 
-        .polaroid img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+        .polaroid img { width: 100%; height: auto; display: block; }
 
-        /* --- Envelope --- */
+        /* --- Envelope Section --- */
         #letter-overlay {
             display: none;
             position: fixed;
@@ -197,7 +207,6 @@
             transition: transform 0.5s;
             z-index: 1;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
         .envelope-wrapper.open .letter { transform: translateY(-120px); z-index: 3; }
@@ -209,12 +218,11 @@
             z-index: -1;
             animation: float 6s linear infinite;
             opacity: 0.5;
-            pointer-events: none;
         }
 
         @keyframes float {
-            0% { transform: translateY(110vh) scale(1); opacity: 0.8; }
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+            0% { transform: translateY(110vh); opacity: 0.8; }
+            100% { transform: translateY(-10vh); opacity: 0; }
         }
 
         .burst-heart {
@@ -222,7 +230,6 @@
             pointer-events: none;
             animation: burst 0.8s ease-out forwards;
             z-index: 9999;
-            font-size: 1.5rem;
         }
 
         @keyframes burst {
@@ -240,24 +247,29 @@
         <div class="envelope-wrapper" id="envelope">
             <div class="letter">
                 <h3 style="color: var(--dark-pink); margin-bottom: 12px;">My Valentine ❤️</h3>
-                <p style="font-size: 0.95rem; color: #555;">You've made this the most beautiful day. I love you more than words can say! ✨</p>
-                <p style="font-size: 0.8rem; font-weight: bold; color: var(--primary-pink); cursor: pointer;">(Tap to Close)</p>
+                <p style="font-size: 0.95rem; color: #555;">I love you more than words can say! ✨</p>
+                <p style="font-size: 0.7rem; margin-top: 15px; color: #999;">(Tap anywhere to close)</p>
             </div>
         </div>
     </div>
 
     <nav>
+        <div class="nav-left"></div>
+
         <div class="nav-links">
             <a href="javascript:void(0)" onclick="showPage('home')">Home</a>
             <a href="javascript:void(0)" onclick="showPage('story')">Story</a>
             <a href="javascript:void(0)" onclick="showPage('gallery')">Gallery</a>
         </div>
-        <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵 Play Ishq</button>
+
+        <div class="nav-right">
+            <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵 Play Ishq</button>
+        </div>
     </nav>
 
     <section id="home" class="page active">
         <h1>Hi, Beautiful. ✨</h1>
-        <p>This is a small world I created just for you. Every pixel here belongs to us.</p>
+        <p>This is a small world I created just for you.</p>
         <div class="polaroid">
             <img src="https://static.vecteezy.com/system/resources/previews/039/380/931/non_2x/cute-cartoon-couple-in-love-valentine-s-day-illustration-vector.jpg" alt="Memory">
         </div>
@@ -265,15 +277,15 @@
     </section>
 
     <section id="story" class="page">
-        <h1>Everything is Better With You.</h1>
-        <p>From our very first conversation to this moment, you've been the best thing to happen to me. "Ishq" sounds exactly like how I feel about you.</p>
+        <h1>Better With You.</h1>
+        <p>Every moment spent with you is my favorite memory.</p>
         <button class="heart-btn" onclick="showPage('gallery')">Our Moments</button>
     </section>
 
     <section id="gallery" class="page">
         <h1>Will you be my Valentine? 💌</h1>
-        <p>I want you to be the one I share all my happy moments with.</p>
-        <button class="heart-btn" onclick="handleYes(event)">Yes, I will! ❤️</button>
+        <p>I want to spend all my happy moments with you.</p>
+        <button class="heart-btn" onclick="handleYes(event)">Yes! ❤️</button>
     </section>
 
     <script>
@@ -304,14 +316,14 @@
             }
         }
 
-        // 2. Page Navigation
+        // 2. Navigation Logic
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 3. Handle Yes Action
+        // 3. Envelope & Burst Logic
         function handleYes(event) {
             for (let i = 0; i < 40; i++) {
                 createBurstHeart(event.clientX, event.clientY);
@@ -334,7 +346,7 @@
         function createBurstHeart(x, y) {
             const heart = document.createElement('div');
             heart.className = 'burst-heart';
-            heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random()*4)];
+            heart.innerHTML = '❤️';
             heart.style.left = x + 'px';
             heart.style.top = y + 'px';
             const tx = (Math.random() - 0.5) * 600;
