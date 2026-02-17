@@ -69,7 +69,17 @@
             white-space: nowrap;
         }
 
-        nav a:active, .music-toggle:active { transform: scale(0.95); background: var(--dark-pink); }
+        nav a:active, .music-toggle:active {
+            transform: scale(0.95);
+            background: var(--dark-pink);
+        }
+
+        @media (max-width: 380px) {
+            nav a, .music-toggle {
+                font-size: 0.7rem;
+                padding: 8px 2px;
+            }
+        }
 
         .page {
             display: none;
@@ -94,7 +104,11 @@
             margin-bottom: 20px;
             border: 1px solid rgba(0,0,0,0.05);
         }
+        .polaroid:hover { transform: rotate(0deg) scale(1.05); z-index: 10; }
         .polaroid img { width: 100%; height: 300px; object-fit: cover; border-radius: 2px; }
+
+        .gallery-container .polaroid { width: 250px; }
+        .gallery-container .polaroid img { height: 300px; }
 
         .gallery-container {
             display: flex;
@@ -117,6 +131,7 @@
             transition: 0.3s;
             margin-top: 20px;
         }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(128, 15, 47, 0.4); }
 
         #scroll-overlay {
             display: none;
@@ -142,6 +157,7 @@
             height: 30px;
             background: var(--wood);
             border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             z-index: 100;
         }
 
@@ -151,31 +167,43 @@
             background: var(--parchment);
             background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
             overflow-y: auto;
+            overflow-x: hidden;
             transition: height 1.5s cubic-bezier(0.19, 1, 0.22, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 0 30px;
+            box-shadow: inset 0 0 50px rgba(139, 69, 19, 0.2);
             scrollbar-width: none;
         }
+        .scroll-content::-webkit-scrollbar { display: none; }
+
         .unrolled .scroll-content { height: 550px; padding: 40px 30px; }
 
         .featured-photo-scroll {
             width: 100%;
             max-width: 200px;
             border: 8px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             margin-bottom: 20px;
+            transform: translateY(20px);
             opacity: 0;
             transition: 1s 1s;
         }
-        .unrolled .featured-photo-scroll { opacity: 1; }
+        .unrolled .featured-photo-scroll { opacity: 1; transform: translateY(0); }
 
-        .scroll-text { opacity: 0; transition: opacity 1s 1.2s; }
-        .unrolled .scroll-text { opacity: 1; }
+        .scroll-text {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s 1.2s, transform 1s 1.2s;
+            text-align: center;
+        }
+        .unrolled .scroll-text { opacity: 1; transform: translateY(0); }
+
         .scroll-text h2 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: #5d4037; }
         .scroll-text p { font-family: 'Dancing Script', cursive; font-size: 1.3rem; color: #3e2723; font-weight: 700; }
 
-        .close-scroll { margin-top: 30px; color: #8d6e63; cursor: pointer; border-bottom: 1px solid #8d6e63; }
+        .close-scroll { margin-top: 30px; color: #8d6e63; cursor: pointer; border-bottom: 1px solid #8d6e63; font-size: 0.8rem; }
 
         .heart-float { position: fixed; pointer-events: none; z-index: -1; animation: floatUp linear forwards; }
         @keyframes floatUp { to { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
@@ -196,10 +224,10 @@
         <div class="scroll-container" id="scroll-box">
             <div class="scroll-roller top"></div>
             <div class="scroll-content">
-                <img src="https://drive.google.com/thumbnail?id=1I1S8XL3nFWwg8iB7ABvEayMjMEYXKtUt&sz=w1000" class="featured-photo-scroll">
+                <img src="https://drive.google.com/thumbnail?id=1I1S8XL3nFWwg8iB7ABvEayMjMEYXKtUt&sz=w1000" class="featured-photo-scroll" alt="Us">
                 <div class="scroll-text">
                     <h2>To My Everything</h2>
-                    <p>You are my anchor in every storm and my most precious treasure. I love you 1433000 ❤️</p>
+                    <p>You are my anchor in every storm and my most precious treasure, not because of what you give me but because of who you are. You’re my safe place, and I’m so grateful to have you in my life. I love you 1433000 ❤️ </p>
                     <p style="margin-top: 15px;">Happy Valentine's Day Love! ❤️</p>
                     <div class="close-scroll" onclick="closeScroll()">Fold Scroll</div>
                 </div>
@@ -226,6 +254,7 @@
 
     <section id="story" class="page">
         <h1 style="font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--dark-pink);">Our Moments</h1>
+        <p>Every meeting brought us closer than ever</p>
         <div class="gallery-container">
             <div class="polaroid" style="--r: -3deg"><img src="https://drive.google.com/thumbnail?id=1l3cIX43Z-5eaeXixIkkpsW851iWRGSRn&sz=w1000"></div>
             <div class="polaroid" style="--r: 4deg"><img src="https://drive.google.com/thumbnail?id=1KxEKzPuVpm1UIs6Yg0d1RcsydS5z-47_&sz=w1000"></div>
@@ -235,106 +264,99 @@
     </section>
 
     <section id="gallery" class="page">
-        <h1 style="font-family: 'Dancing Script'; font-size: 4rem; color: var(--dark-pink); margin-bottom: 30px;">Will you be my Valentine?</h1>
+        <h1 style="font-family: 'Dancing Script'; font-size: 4rem; color: var(--dark-pink); margin-bottom: 30px;">Will you be my Valentine today, tomorrow, and always?</h1>
         <button class="cta-btn" onclick="openScroll()" style="background: var(--primary-pink); font-size: 1.4rem;">Yes, I will! ❤️</button>
     </section>
 
-  <script>
-    var player;
-    var playerReady = false;
-    var musicPlaying = false;
-    var hasBeenPrimed = false;
+    <script>
+        var player;
+        var playerReady = false;
+        var musicPlaying = false;
+        var hasBeenPrimed = false;
 
-    // 1. YouTube API Setup
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('youtube-player', {
-            height: '0', width: '0', videoId: 'hHuG7FIKgtc',
-            playerVars: { 
-                'autoplay': 0, 
-                'controls': 0, 
-                'loop': 1, 
-                'playlist': 'hHuG7FIKgtc',
-                'playsinline': 1 
-            },
-            events: { 
-                'onReady': function() { 
-                    playerReady = true; 
-                } 
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '0', width: '0', videoId: 'hHuG7FIKgtc',
+                playerVars: { 
+                    'autoplay': 0, 
+                    'controls': 0, 
+                    'loop': 1, 
+                    'playlist': 'hHuG7FIKgtc',
+                    'playsinline': 1 
+                },
+                events: { 
+                    'onReady': function() { playerReady = true; } 
+                }
+            });
+        }
+
+        var tag = document.createElement('script'); 
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0]; 
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // --- IMPROVED MOBILE LOGIC ---
+        // This primes the player on ANY first touch of the screen
+        function primeAudio() {
+            if (playerReady && !hasBeenPrimed) {
+                player.playVideo();
+                player.pauseVideo();
+                hasBeenPrimed = true;
+                document.removeEventListener('touchstart', primeAudio);
+                document.removeEventListener('click', primeAudio);
             }
-        });
-    }
-
-    var tag = document.createElement('script'); 
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0]; 
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    // 2. THE SECRET FIX: Prime the audio on ANY first interaction
-    // This satisfies iOS Chrome's security policy before they reach the music button
-    function primeAudio() {
-        if (playerReady && !hasBeenPrimed) {
-            player.playVideo();
-            player.pauseVideo();
-            hasBeenPrimed = true;
-            console.log("Audio primed for iOS");
-            // Remove listeners once primed
-            document.removeEventListener('click', primeAudio);
-            document.removeEventListener('touchstart', primeAudio);
         }
-    }
-    document.addEventListener('click', primeAudio);
-    document.addEventListener('touchstart', primeAudio);
+        document.addEventListener('touchstart', primeAudio);
+        document.addEventListener('click', primeAudio);
 
-    // 3. One-Tap Toggle
-    function toggleMusic() {
-        if (!playerReady) return;
-        const btn = document.getElementById('musicBtn');
-        
-        if (!musicPlaying) {
-            player.playVideo();
-            // Fallback for slow connections: force play again in 100ms
-            setTimeout(() => { player.playVideo(); }, 100);
+        function toggleMusic() {
+            if (!playerReady) return;
+            const btn = document.getElementById('musicBtn');
             
-            btn.innerHTML = "⏸ Pause";
-            musicPlaying = true;
-        } else {
-            player.pauseVideo();
-            btn.innerHTML = "🎵 Play";
-            musicPlaying = false;
+            // Using our internal musicPlaying state for instant response
+            if (!musicPlaying) {
+                player.playVideo();
+                // Backup force-play for iOS
+                setTimeout(() => { player.playVideo(); }, 150);
+                btn.innerHTML = "⏸ Pause";
+                musicPlaying = true;
+            } else {
+                player.pauseVideo();
+                btn.innerHTML = "🎵 Play";
+                musicPlaying = false;
+            }
         }
-    }
 
-    // Navigation and other functions
-    function showPage(pageId) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    }
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
 
-    function openScroll() {
-        document.getElementById('scroll-overlay').style.display = 'flex';
-        setTimeout(() => { document.getElementById('scroll-box').classList.add('unrolled'); }, 100);
-    }
+        function openScroll() {
+            document.getElementById('scroll-overlay').style.display = 'flex';
+            setTimeout(() => { document.getElementById('scroll-box').classList.add('unrolled'); }, 100);
+        }
 
-    function closeScroll() {
-        document.getElementById('scroll-box').classList.remove('unrolled');
-        setTimeout(() => { document.getElementById('scroll-overlay').style.display = 'none'; }, 1500);
-    }
+        function closeScroll() {
+            document.getElementById('scroll-box').classList.remove('unrolled');
+            setTimeout(() => { document.getElementById('scroll-overlay').style.display = 'none'; }, 1500);
+        }
 
-    function spawnHeart() {
-        const h = document.createElement('div');
-        h.className = 'heart-float';
-        h.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
-        h.style.left = Math.random() * 100 + 'vw';
-        h.style.top = '105vh';
-        h.style.fontSize = (Math.random() * 20 + 10) + 'px';
-        const duration = Math.random() * 3 + 5;
-        h.style.animationDuration = duration + 's';
-        document.body.appendChild(h);
-        setTimeout(() => h.remove(), duration * 1000);
-    }
-    setInterval(spawnHeart, 150);
-</script>
-    
+        function spawnHeart() {
+            const h = document.createElement('div');
+            h.className = 'heart-float';
+            h.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.top = '105vh';
+            h.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            h.style.opacity = Math.random() * 0.5 + 0.3;
+            const duration = Math.random() * 3 + 5;
+            h.style.animationDuration = duration + 's';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), duration * 1000);
+        }
+        setInterval(spawnHeart, 100);
+    </script>
 </body>
 </html>
