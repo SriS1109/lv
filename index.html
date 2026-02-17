@@ -180,18 +180,16 @@
         .heart-float { position: fixed; pointer-events: none; z-index: -1; animation: floatUp linear forwards; }
         @keyframes floatUp { to { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
 
-        /* MOBILE FIXES */
         @media (max-width: 500px) {
             .scroll-roller { width: 310px; }
             .scroll-content { width: 280px; }
             
-            /* Smaller general polaroids */
-            .polaroid { width: 180px; }
-            .polaroid img { height: 160px; }
-
-            /* SPECIFIC FIX: Increase height for the FIRST polaroid on Home */
+            /* Taller Polaroid on Mobile */
             #home .polaroid { width: 220px; }
             #home .polaroid img { height: 280px; }
+
+            /* Other small images */
+            .story-page-pics { width: 180px; height: 160px; }
         }
     </style>
 </head>
@@ -249,13 +247,18 @@
         var player;
         var playerReady = false;
         var musicPlaying = false;
-        var hasBeenPrimed = false;
 
-        // YouTube API Init
+        // 1. YouTube API Load
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
                 height: '0', width: '0', videoId: 'hHuG7FIKgtc',
-                playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': 'hHuG7FIKgtc', 'playsinline': 1 },
+                playerVars: { 
+                    'autoplay': 0, 
+                    'controls': 0, 
+                    'loop': 1, 
+                    'playlist': 'hHuG7FIKgtc',
+                    'playsinline': 1 // Crucial for mobile
+                },
                 events: { 'onReady': function() { playerReady = true; } }
             });
         }
@@ -265,30 +268,19 @@
         var firstScriptTag = document.getElementsByTagName('script')[0]; 
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // MOBILE TRICK: Prime the player on any user touch
-        function primeAudio() {
-            if (playerReady && !hasBeenPrimed) {
-                player.playVideo();
-                player.pauseVideo();
-                hasBeenPrimed = true;
-                // Remove listeners after first touch
-                document.removeEventListener('click', primeAudio);
-                document.removeEventListener('touchstart', primeAudio);
-            }
-        }
-        document.addEventListener('click', primeAudio);
-        document.addEventListener('touchstart', primeAudio);
-
+        // 2. The Play Logic
         function toggleMusic() {
             if (!playerReady) return;
             const btn = document.getElementById('musicBtn');
             
+            // If it's paused or not started, force play
             if (!musicPlaying) {
                 player.playVideo();
-                // Double tap play for mobile stability
-                setTimeout(() => { player.playVideo(); }, 150);
                 btn.innerHTML = "⏸ Pause";
                 musicPlaying = true;
+                
+                // Backup for mobile browsers that need a split-second to wake up
+                setTimeout(() => { if (player.getPlayerState() !== 1) player.playVideo(); }, 100);
             } else {
                 player.pauseVideo();
                 btn.innerHTML = "🎵 Play";
@@ -296,12 +288,14 @@
             }
         }
 
+        // Navigation
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
+        // Scroll logic
         function openScroll() {
             document.getElementById('scroll-overlay').style.display = 'flex';
             setTimeout(() => { document.getElementById('scroll-box').classList.add('unrolled'); }, 100);
@@ -312,6 +306,7 @@
             setTimeout(() => { document.getElementById('scroll-overlay').style.display = 'none'; }, 1500);
         }
 
+        // Hearts
         function spawnHeart() {
             const h = document.createElement('div');
             h.className = 'heart-float';
