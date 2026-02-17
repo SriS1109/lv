@@ -239,83 +239,102 @@
         <button class="cta-btn" onclick="openScroll()" style="background: var(--primary-pink); font-size: 1.4rem;">Yes, I will! ❤️</button>
     </section>
 
-    <script>
-        var player;
-        var playerReady = false;
-        var musicPlaying = false;
+  <script>
+    var player;
+    var playerReady = false;
+    var musicPlaying = false;
+    var hasBeenPrimed = false;
 
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-player', {
-                height: '0', width: '0', videoId: 'hHuG7FIKgtc',
-                playerVars: { 
-                    'autoplay': 0, 
-                    'controls': 0, 
-                    'loop': 1, 
-                    'playlist': 'hHuG7FIKgtc',
-                    'playsinline': 1 // Essential for iOS
-                },
-                events: { 'onReady': function() { playerReady = true; } }
-            });
-        }
-
-        var tag = document.createElement('script'); 
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0]; 
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        // This trick "unmutes" and primes the audio context on the first touch anywhere
-        document.body.addEventListener('touchstart', function() {
-            if(playerReady && !musicPlaying) {
-                player.playVideo();
-                player.pauseVideo();
+    // 1. YouTube API Setup
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('youtube-player', {
+            height: '0', width: '0', videoId: 'hHuG7FIKgtc',
+            playerVars: { 
+                'autoplay': 0, 
+                'controls': 0, 
+                'loop': 1, 
+                'playlist': 'hHuG7FIKgtc',
+                'playsinline': 1 
+            },
+            events: { 
+                'onReady': function() { 
+                    playerReady = true; 
+                } 
             }
-        }, {once: true});
+        });
+    }
 
-        function toggleMusic() {
-            if (!playerReady) return;
-            const btn = document.getElementById('musicBtn');
+    var tag = document.createElement('script'); 
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0]; 
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 2. THE SECRET FIX: Prime the audio on ANY first interaction
+    // This satisfies iOS Chrome's security policy before they reach the music button
+    function primeAudio() {
+        if (playerReady && !hasBeenPrimed) {
+            player.playVideo();
+            player.pauseVideo();
+            hasBeenPrimed = true;
+            console.log("Audio primed for iOS");
+            // Remove listeners once primed
+            document.removeEventListener('click', primeAudio);
+            document.removeEventListener('touchstart', primeAudio);
+        }
+    }
+    document.addEventListener('click', primeAudio);
+    document.addEventListener('touchstart', primeAudio);
+
+    // 3. One-Tap Toggle
+    function toggleMusic() {
+        if (!playerReady) return;
+        const btn = document.getElementById('musicBtn');
+        
+        if (!musicPlaying) {
+            player.playVideo();
+            // Fallback for slow connections: force play again in 100ms
+            setTimeout(() => { player.playVideo(); }, 100);
             
-            // Bypass state check and rely on our own toggle
-            if (!musicPlaying) {
-                player.playVideo();
-                btn.innerHTML = "⏸ Pause";
-                musicPlaying = true;
-            } else {
-                player.pauseVideo();
-                btn.innerHTML = "🎵 Play";
-                musicPlaying = false;
-            }
+            btn.innerHTML = "⏸ Pause";
+            musicPlaying = true;
+        } else {
+            player.pauseVideo();
+            btn.innerHTML = "🎵 Play";
+            musicPlaying = false;
         }
+    }
 
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
+    // Navigation and other functions
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
 
-        function openScroll() {
-            document.getElementById('scroll-overlay').style.display = 'flex';
-            setTimeout(() => { document.getElementById('scroll-box').classList.add('unrolled'); }, 100);
-        }
+    function openScroll() {
+        document.getElementById('scroll-overlay').style.display = 'flex';
+        setTimeout(() => { document.getElementById('scroll-box').classList.add('unrolled'); }, 100);
+    }
 
-        function closeScroll() {
-            document.getElementById('scroll-box').classList.remove('unrolled');
-            setTimeout(() => { document.getElementById('scroll-overlay').style.display = 'none'; }, 1500);
-        }
+    function closeScroll() {
+        document.getElementById('scroll-box').classList.remove('unrolled');
+        setTimeout(() => { document.getElementById('scroll-overlay').style.display = 'none'; }, 1500);
+    }
 
-        function spawnHeart() {
-            const h = document.createElement('div');
-            h.className = 'heart-float';
-            h.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
-            h.style.left = Math.random() * 100 + 'vw';
-            h.style.top = '105vh';
-            h.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            const duration = Math.random() * 3 + 5;
-            h.style.animationDuration = duration + 's';
-            document.body.appendChild(h);
-            setTimeout(() => h.remove(), duration * 1000);
-        }
-        setInterval(spawnHeart, 150);
-    </script>
+    function spawnHeart() {
+        const h = document.createElement('div');
+        h.className = 'heart-float';
+        h.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
+        h.style.left = Math.random() * 100 + 'vw';
+        h.style.top = '105vh';
+        h.style.fontSize = (Math.random() * 20 + 10) + 'px';
+        const duration = Math.random() * 3 + 5;
+        h.style.animationDuration = duration + 's';
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), duration * 1000);
+    }
+    setInterval(spawnHeart, 150);
+</script>
+    
 </body>
 </html>
