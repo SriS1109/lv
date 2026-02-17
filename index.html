@@ -255,25 +255,53 @@
     <script>
         var player; 
         var isPlaying = false;
+        var apiReady = false;
 
+        // 1. Initialize Player
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
                 height: '0', width: '0', videoId: 'hHuG7FIKgtc',
-                playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': 'hHuG7FIKgtc' },
-                events: { 'onReady': function() { console.log("Player Ready"); } }
+                playerVars: { 
+                    'autoplay': 0, 
+                    'controls': 0, 
+                    'loop': 1, 
+                    'playlist': 'hHuG7FIKgtc',
+                    'playsinline': 1 
+                },
+                events: { 
+                    'onReady': function(event) { 
+                        apiReady = true;
+                        // Pre-warm trick: Play muted then pause immediately
+                        event.target.mute();
+                        event.target.playVideo();
+                        setTimeout(() => { 
+                            event.target.pauseVideo(); 
+                            event.target.unMute(); 
+                        }, 200);
+                    } 
+                }
             });
         }
 
+        // 2. Load YouTube API
         var tag = document.createElement('script'); 
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0]; 
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+        // 3. Force "Unlock" on first user touch
+        document.body.addEventListener('touchstart', function() {
+            if(apiReady && !isPlaying) {
+                player.playVideo();
+                player.pauseVideo();
+            }
+        }, {once: true});
+
+        // 4. Enhanced Toggle Logic
         function toggleMusic() {
-            if (!player) return;
+            if (!apiReady) return;
             const btn = document.getElementById('musicBtn');
             
-            // Logic: If not playing, force play. If playing, pause.
             if (!isPlaying) {
                 player.playVideo();
                 btn.innerHTML = "⏸ Pause";
@@ -286,6 +314,11 @@
         }
 
         function showPage(pageId) {
+            // Prime audio on every internal button click
+            if(apiReady && !isPlaying) {
+                player.playVideo();
+                player.pauseVideo();
+            }
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             window.scrollTo({top: 0, behavior: 'smooth'});
